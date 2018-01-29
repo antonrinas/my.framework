@@ -2,8 +2,7 @@
 
 class NamespaceAutoloader
 {
-    // карта для соответствия неймспейса пути в файловой системе
-    protected $namespacesMap = array();
+    protected $namespacesMap = [];
 
     public function addNamespace($namespace, $rootDir)
     {
@@ -17,7 +16,7 @@ class NamespaceAutoloader
 
     public function register()
     {
-        spl_autoload_register(array($this, 'autoload'));
+        spl_autoload_register([$this, 'autoload']);
     }
 
     protected function autoload($class)

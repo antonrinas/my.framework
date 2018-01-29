@@ -2,20 +2,43 @@
 
 namespace Framework;
 
+use Framework\Mvc\Controller\FrontController;
+
 class Application
 {
-    private function __construct()
-    {
+    private $config;
 
+    /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
-    public static function init($config)
+    /**
+     * @param mixed $config
+     *
+     * @return Application
+     */
+    public function setConfig($config)
     {
-        return new Application($config);
+        $this->config = $config;
+        return $this;
     }
 
-    private function start()
-    {
 
+    public function __construct($config)
+    {
+        $this->setConfig($config);
+        $frontController = new FrontController($config);
+        $this->init();
+    }
+
+    private function init()
+    {
+        if (!isset($_SESSION)){
+            session_start();
+        }
     }
 }
