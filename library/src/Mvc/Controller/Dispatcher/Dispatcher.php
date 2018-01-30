@@ -31,27 +31,6 @@ class Dispatcher implements DispatcherInterface
     }
 
     /**
-     * @param $config
-     *
-     * @throws DispatcherException
-     */
-    private function checkConfig($config)
-    {
-        if (!array_key_exists('module', $config)){
-            throw new DispatcherException("Module setting is required. You must provide 'module' key in the route config.");
-        }
-        if (!array_key_exists('namespace', $config)){
-            throw new DispatcherException("Namespace setting is required. You must provide 'namespace' key in the route config.");
-        }
-        if (!array_key_exists('controller', $config)){
-            throw new DispatcherException("Controller name setting is required. You must provide 'controller' key in the route config.");
-        }
-        if (!array_key_exists('method', $config)){
-            throw new DispatcherException("Method mane setting is required. You must provide 'method' key in the route config.");
-        }
-    }
-
-    /**
      * @throws DispatcherException
      */
     public function dispatch()
@@ -61,18 +40,9 @@ class Dispatcher implements DispatcherInterface
         $controllerNamespace = $route['namespace'];
         $controllerName = $route['controller'];
         $className = '\\' . $moduleName . '\\' . $controllerNamespace . '\\' . $controllerName . 'Controller';
-
         $methodName = $route['method'];
-        if (!class_exists($className)) {
-            throw new DispatcherException(sprintf("Controller %s was not found",
-                $className
-            ));
-        }
-        if (!method_exists($className, $methodName)) {
-            throw new DispatcherException(sprintf("Controller method %s was not found",
-                $methodName
-            ));
-        }
+        $this->checkClassMethodAvalability($className, $methodName);
+
         $moduleConfig = require_once (ROOT . DS . 'application' . DS . 'module' . DS . $moduleName . DS . 'config' . DS . 'config.php');
         $controller = new $className;
         $controller->setRequest($this->request);
@@ -93,9 +63,43 @@ class Dispatcher implements DispatcherInterface
                 )
             );
         }
-
         header('Content-Type: ' . $controller->getContentType());
 
         return call_user_func_array([$controller, $methodName], $this->request->getParams());
+    }
+
+    /**
+     * @param $config
+     *
+     * @throws DispatcherException
+     */
+    private function checkConfig($config)
+    {
+        if (!array_key_exists('module', $config)){
+            throw new DispatcherException("Module setting is required. You must provide 'module' key in the route config.");
+        }
+        if (!array_key_exists('namespace', $config)){
+            throw new DispatcherException("Namespace setting is required. You must provide 'namespace' key in the route config.");
+        }
+        if (!array_key_exists('controller', $config)){
+            throw new DispatcherException("Controller name setting is required. You must provide 'controller' key in the route config.");
+        }
+        if (!array_key_exists('method', $config)){
+            throw new DispatcherException("Method mane setting is required. You must provide 'method' key in the route config.");
+        }
+    }
+
+    private function checkClassMethodAvalability($className, $methodName)
+    {
+        if (!class_exists($className)) {
+            throw new DispatcherException(sprintf("Controller %s was not found",
+                $className
+            ));
+        }
+        if (!method_exists($className, $methodName)) {
+            throw new DispatcherException(sprintf("Controller method %s was not found",
+                $methodName
+            ));
+        }
     }
 }
