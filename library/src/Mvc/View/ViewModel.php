@@ -176,6 +176,9 @@ class ViewModel implements ViewModelInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function render()
     {
         extract($this->params);
@@ -201,6 +204,13 @@ class ViewModel implements ViewModelInterface
         return $content;
     }
 
+    /**
+     * @param $file
+     *
+     * @return string
+     *
+     * @throws ViewModelException
+     */
     private function renderPhpToString($file)
     {
         if (!is_file($file)){

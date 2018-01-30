@@ -8,6 +8,13 @@ use Framework\Mvc\View\ViewModelInterface;
 abstract class BaseController implements BaseControllerInterface
 {
     /**
+     * @var string - possible values:
+     *                  - application/json - application returns json for API calls
+     *                  - text/html - application returns html
+     */
+    protected $contentType = 'text/html';
+
+    /**
      * @var RequestInterface
      */
     protected $request;
@@ -77,5 +84,13 @@ abstract class BaseController implements BaseControllerInterface
     {
         $this->view = $view;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
     }
 }

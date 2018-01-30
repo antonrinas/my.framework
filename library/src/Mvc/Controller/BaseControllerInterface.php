@@ -42,4 +42,9 @@ interface BaseControllerInterface
      * @return BaseController
      */
     public function setView($view);
+
+    /**
+     * @return string
+     */
+    public function getContentType();
 }

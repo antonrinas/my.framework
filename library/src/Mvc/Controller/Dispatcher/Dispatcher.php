@@ -4,6 +4,7 @@ namespace Framework\Mvc\Controller\Dispatcher;
 
 use Framework\Mvc\Controller\Request\RequestInterface;
 use Framework\Mvc\View\ViewModel;
+use Framework\Mvc\View\JsonModel;
 
 class Dispatcher implements DispatcherInterface
 {
@@ -76,11 +77,25 @@ class Dispatcher implements DispatcherInterface
         $controller = new $className;
         $controller->setRequest($this->request);
         $controller->setModuleConfig($moduleConfig);
-        $viewModel = new ViewModel($moduleConfig);
-        $viewModel->setControllerName($controllerName)
-                  ->setMethodName($route['method']);
+        if ($controller->getContentType() === 'text/html'){
+            $viewModel = new ViewModel($moduleConfig);
+            $viewModel->setControllerName($controllerName)
+                ->setMethodName($route['method']);
+            $controller->setView($viewModel);
+        }
+        if ($controller->getContentType() === 'application/json'){
+            $controller->setView(new JsonModel());
+        }
+        if ($controller->getContentType() !== 'text/html' && $controller->getContentType() !== 'application/json') {
+            throw new DispatcherException(
+                sprintf("Invalid controller content type %s. Only text/html or application/json are available",
+                    $controller->getContentType()
+                )
+            );
+        }
 
-        $controller->setView($viewModel);
+        header('Content-Type: ' . $controller->getContentType());
+
         return call_user_func_array([$controller, $methodName], $this->request->getParams());
     }
 }
