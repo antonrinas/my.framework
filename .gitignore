@@ -1,4 +1,3 @@
 .idea/*
-tmp/*
-!tmp/.gitkeep
+tmp/logs/*
 !tmp/logs/.gitkeep
