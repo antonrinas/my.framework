@@ -12,6 +12,9 @@ class IndexController extends BaseController
 
     public function index()
     {
-        print_r('main page');exit();
+        $this->getView()->setParams([
+            'name' => 'Антон',
+            'surname' => 'Ринас',
+        ])->setLayoutName('default')->render();
     }
 }

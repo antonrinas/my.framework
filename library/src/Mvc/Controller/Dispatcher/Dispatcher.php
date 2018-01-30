@@ -3,6 +3,7 @@
 namespace Framework\Mvc\Controller\Dispatcher;
 
 use Framework\Mvc\Controller\Request\RequestInterface;
+use Framework\Mvc\View\ViewModel;
 
 class Dispatcher implements DispatcherInterface
 {
@@ -16,7 +17,11 @@ class Dispatcher implements DispatcherInterface
      */
     private $request;
 
-
+    /**
+     * Dispatcher constructor.
+     * @param $config
+     * @param RequestInterface $request
+     */
     public function __construct($config, RequestInterface $request)
     {
         $this->checkConfig($config);
@@ -24,6 +29,11 @@ class Dispatcher implements DispatcherInterface
         $this->request = $request;
     }
 
+    /**
+     * @param $config
+     *
+     * @throws DispatcherException
+     */
     private function checkConfig($config)
     {
         if (!array_key_exists('module', $config)){
@@ -40,13 +50,16 @@ class Dispatcher implements DispatcherInterface
         }
     }
 
+    /**
+     * @throws DispatcherException
+     */
     public function dispatch()
     {
         $route = $this->config;
         $moduleName = $route['module'];
         $controllerNamespace = $route['namespace'];
         $controllerName = $route['controller'];
-        $className = '\\' . $moduleName . '\\' . $controllerNamespace . '\\' . $controllerName;
+        $className = '\\' . $moduleName . '\\' . $controllerNamespace . '\\' . $controllerName . 'Controller';
 
         $methodName = $route['method'];
         if (!class_exists($className)) {
@@ -59,8 +72,15 @@ class Dispatcher implements DispatcherInterface
                 $methodName
             ));
         }
+        $moduleConfig = require_once (ROOT . DS . 'application' . DS . 'module' . DS . $moduleName . DS . 'config' . DS . 'config.php');
         $controller = new $className;
         $controller->setRequest($this->request);
-        call_user_func_array([$controller, $methodName], $this->request->getParams());
+        $controller->setModuleConfig($moduleConfig);
+        $viewModel = new ViewModel($moduleConfig);
+        $viewModel->setControllerName($controllerName)
+                  ->setMethodName($route['method']);
+
+        $controller->setView($viewModel);
+        return call_user_func_array([$controller, $methodName], $this->request->getParams());
     }
 }

@@ -5,13 +5,13 @@ return [
         '/' => [
             'module' => 'Main',
             'namespace' => 'Controller',
-            'controller' => 'IndexController',
+            'controller' => 'Index',
             'method' => 'index',
         ],
         '/test/:id1/:id2/:id3' => [
             'module' => 'Main',
             'namespace' => 'Controller',
-            'controller' => 'TestController',
+            'controller' => 'Test',
             'method' => 'index',
             'params' => [
                 ':id1' => '(\d+)',
@@ -22,7 +22,7 @@ return [
         '/test/some-method' => [
             'module' => 'Main',
             'namespace' => 'Controller',
-            'controller' => 'TestController',
+            'controller' => 'Test',
             'method' => 'someMethod',
         ],
     ],

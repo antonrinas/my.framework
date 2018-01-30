@@ -18,6 +18,9 @@ class TestController extends BaseController
 
     public function someMethod()
     {
-        print_r('someMethod');exit();
+        return $this->getView()->setParams([
+            'name' => 'Антон',
+            'surname' => 'Ринас',
+        ])->render();
     }
 }

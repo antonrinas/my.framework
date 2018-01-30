@@ -9,7 +9,7 @@ use Framework\Mvc\Controller\Dispatcher\Dispatcher;
 use Framework\Mvc\Controller\Request\RequestInterface;
 use Framework\Mvc\Controller\Request\Request;
 
-class FrontController
+class FrontController implements FrontControllerInterface
 {
     private $config;
 
@@ -31,9 +31,16 @@ class FrontController
     public function __construct($config)
     {
         $this->config = $config['routes'];
+    }
+
+    /**
+     * @return string
+     */
+    public function handleRequest()
+    {
         $this->initRouting();
         $this->formRequest();
-        $this->dispatch();
+        return $this->dispatch();
     }
 
     private function initRouting()
@@ -53,6 +60,6 @@ class FrontController
     private function dispatch()
     {
         $this->dispatcher = new Dispatcher($this->router->getMatchedRoute(), $this->request);
-        $this->dispatcher->dispatch();
+        return $this->dispatcher->dispatch();
     }
 }
