@@ -8,6 +8,7 @@ use Framework\Mvc\Controller\Dispatcher\DispatcherInterface;
 use Framework\Mvc\Controller\Dispatcher\Dispatcher;
 use Framework\Mvc\Controller\Request\RequestInterface;
 use Framework\Mvc\Controller\Request\Request;
+use Framework\Mvc\Controller\Response\ResponseInterface;
 
 class FrontController implements FrontControllerInterface
 {
@@ -34,12 +35,13 @@ class FrontController implements FrontControllerInterface
     }
 
     /**
-     * @return string
+     * @return ResponseInterface
      */
     public function handleRequest()
     {
         $this->initRouting();
-        $this->formRequest();
+        $this->initRequest();
+
         return $this->dispatch();
     }
 
@@ -48,7 +50,7 @@ class FrontController implements FrontControllerInterface
         $this->router = new Router($this->config);
     }
 
-    private function formRequest()
+    private function initRequest()
     {
         $this->request = new Request();
         $this->request->setRequestMethod($_SERVER['REQUEST_METHOD']);
@@ -57,9 +59,13 @@ class FrontController implements FrontControllerInterface
         $this->request->setPostParams($_POST);
     }
 
+    /**
+     * @return ResponseInterface
+     */
     private function dispatch()
     {
         $this->dispatcher = new Dispatcher($this->router->getMatchedRoute(), $this->request);
+
         return $this->dispatcher->dispatch();
     }
 }

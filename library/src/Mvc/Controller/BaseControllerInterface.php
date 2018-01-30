@@ -3,6 +3,7 @@
 namespace Framework\Mvc\Controller;
 
 use Framework\Mvc\Controller\Request\RequestInterface;
+use Framework\Mvc\Controller\Response\ResponseInterface;
 use Framework\Mvc\View\ViewModelInterface;
 
 interface BaseControllerInterface
@@ -15,9 +16,21 @@ interface BaseControllerInterface
     /**
      * @param RequestInterface $request
      *
-     * @return BaseController
+     * @return ResponseInterface
      */
     public function setRequest($request);
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse();
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return ResponseInterface
+     */
+    public function setResponse($response);
 
     /**
      * @return array
@@ -27,7 +40,7 @@ interface BaseControllerInterface
     /**
      * @param array $moduleConfig
      *
-     * @return BaseController
+     * @return ResponseInterface
      */
     public function setModuleConfig($moduleConfig);
 
@@ -39,7 +52,7 @@ interface BaseControllerInterface
     /**
      * @param ViewModelInterface $view
      *
-     * @return BaseController
+     * @return ResponseInterface
      */
     public function setView($view);
 

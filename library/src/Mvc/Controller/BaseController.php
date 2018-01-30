@@ -3,6 +3,7 @@
 namespace Framework\Mvc\Controller;
 
 use Framework\Mvc\Controller\Request\RequestInterface;
+use Framework\Mvc\Controller\Response\ResponseInterface;
 use Framework\Mvc\View\ViewModelInterface;
 
 abstract class BaseController implements BaseControllerInterface
@@ -18,6 +19,11 @@ abstract class BaseController implements BaseControllerInterface
      * @var RequestInterface
      */
     protected $request;
+
+    /**
+     * @var ResponseInterface
+     */
+    protected $response;
 
     /**
      * @var array
@@ -45,6 +51,25 @@ abstract class BaseController implements BaseControllerInterface
     public function setRequest($request)
     {
         $this->request = $request;
+        return $this;
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return BaseController
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
         return $this;
     }
 

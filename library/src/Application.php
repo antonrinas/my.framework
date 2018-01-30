@@ -36,7 +36,8 @@ class Application implements ApplicationInterface
         $this->initSession();
         $this->initEnviroment();
         $frontController = new FrontController($this->config);
-        echo $frontController->handleRequest();
+        $response = $frontController->handleRequest();
+        echo $response;
     }
 
     private function initSession()
