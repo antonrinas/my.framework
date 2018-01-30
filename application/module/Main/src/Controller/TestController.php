@@ -1,9 +1,10 @@
 <?php
 
-namespace Application\Controller;
+namespace Main\Controller;
 
+use Framework\Mvc\Controller\BaseController;
 
-class TestController
+class TestController extends BaseController
 {
     public function __construct()
     {
@@ -12,7 +13,7 @@ class TestController
 
     public function index($id1, $id2, $id3)
     {
-        print_r($id3);exit();
+        print_r($this->getRequest());exit();
     }
 
     public function someMethod()

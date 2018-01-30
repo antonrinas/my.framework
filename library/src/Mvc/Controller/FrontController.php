@@ -2,40 +2,57 @@
 
 namespace Framework\Mvc\Controller;
 
-use Framework\Mvc\Controller\Router\Router;
 use Framework\Mvc\Controller\Router\RouterInterface;
+use Framework\Mvc\Controller\Router\Router;
+use Framework\Mvc\Controller\Dispatcher\DispatcherInterface;
+use Framework\Mvc\Controller\Dispatcher\Dispatcher;
+use Framework\Mvc\Controller\Request\RequestInterface;
+use Framework\Mvc\Controller\Request\Request;
 
 class FrontController
 {
+    private $config;
+
     /**
      * @var RouterInterface
      */
     private $router;
 
+    /**
+     * @var DispatcherInterface
+     */
+    private $dispatcher;
+
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+
     public function __construct($config)
     {
-        $this->router = new Router($config['routes']);
+        $this->config = $config['routes'];
+        $this->initRouting();
+        $this->formRequest();
         $this->dispatch();
+    }
+
+    private function initRouting()
+    {
+        $this->router = new Router($this->config);
+    }
+
+    private function formRequest()
+    {
+        $this->request = new Request();
+        $this->request->setRequestMethod($_SERVER['REQUEST_METHOD']);
+        $this->request->setGetParams($this->router->getGetParams());
+        $this->request->setParams($this->router->getParams());
+        $this->request->setPostParams($_POST);
     }
 
     private function dispatch()
     {
-        $matchedRoute = $this->router->getMatchedRoute();
-        $controllerNamespace = $matchedRoute['namespace'];
-        $controllerName = $matchedRoute['controller'];
-        $className = $controllerNamespace . '\\' . $controllerName;
-        $methodName = $matchedRoute['method'];
-        if (!class_exists($className)) {
-            throw new ControllerException(sprintf("Controller %s was not found",
-                $className
-            ));
-        }
-        if (!method_exists($className, $methodName)) {
-            throw new ControllerException(sprintf("Controller method %s was not found",
-                $methodName
-            ));
-        }
-        $controller = new $className;
-        call_user_func_array([$controller, $methodName], $this->router->getParams());
+        $this->dispatcher = new Dispatcher($this->router->getMatchedRoute(), $this->request);
+        $this->dispatcher->dispatch();
     }
 }

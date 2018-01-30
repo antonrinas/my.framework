@@ -2,8 +2,15 @@
 
 return [
     'routes' => [
+        '/' => [
+            'module' => 'Main',
+            'namespace' => 'Controller',
+            'controller' => 'IndexController',
+            'method' => 'index',
+        ],
         '/test/:id1/:id2/:id3' => [
-            'namespace' => 'Application\Controller',
+            'module' => 'Main',
+            'namespace' => 'Controller',
             'controller' => 'TestController',
             'method' => 'index',
             'params' => [
@@ -13,9 +20,10 @@ return [
             ],
         ],
         '/test/some-method' => [
-            'namespace' => 'Application\Controller',
+            'module' => 'Main',
+            'namespace' => 'Controller',
             'controller' => 'TestController',
             'method' => 'someMethod',
-        ]
+        ],
     ],
 ];

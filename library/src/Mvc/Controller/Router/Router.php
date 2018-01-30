@@ -75,15 +75,14 @@ class Router implements RouterInterface
                 foreach ($rules['params'] as $paramName => $regex){
                     $pattern = str_replace($paramName, $regex, $pattern);
                 }
-                $pattern = '/' . $pattern . '/';
 
-                if (preg_match($pattern, $this->url)){
+                if (preg_match('/' . $pattern . '$/', $this->url)){
                     $replacement = [];
                     for ($i = 1; $i <= count($rules['params']); $i++) {
                         $replacement[] = '${' . $i . '}';
                     }
 
-                    $matches = preg_replace($pattern, implode('|', $replacement), $this->url);
+                    $matches = preg_replace('/' . $pattern . '/', implode('|', $replacement), $this->url);
                     $this->params = explode('|', $matches);
                     $this->matchedRoute = $rules;
 
@@ -91,7 +90,7 @@ class Router implements RouterInterface
                 }
             } else {
                 $pattern = str_replace("/", "\/", $route);
-                if (preg_match('/' . $pattern . '/', $this->url)){
+                if (preg_match('/' . $pattern . '$/', $this->url)){
                     $this->matchedRoute = $rules;
 
                     return true;

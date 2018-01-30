@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Exception;
+namespace Main\Exception;
 
 class ModelException extends \Exception
 {
