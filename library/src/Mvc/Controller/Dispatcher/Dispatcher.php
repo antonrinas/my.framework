@@ -87,6 +87,9 @@ class Dispatcher implements DispatcherInterface
         if (!array_key_exists('method', $config)){
             throw new DispatcherException("Method mane setting is required. You must provide 'method' key in the route config.");
         }
+        if (!array_key_exists('request_method', $config)){
+            throw new DispatcherException("Request method setting is required. You must provide 'request_method' key in the route config.");
+        }
     }
 
     private function checkClassMethodAvalability($className, $methodName)
