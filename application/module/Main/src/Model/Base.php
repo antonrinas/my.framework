@@ -17,14 +17,6 @@ class Base
     }
 
     /**
-     * @return mixed
-     */
-    public function getConnection()
-    {
-        return $this->tableAdapter->getConnection();
-    }
-
-    /**
      * @return TableAdapterInterface
      */
     public function getTableAdapter()
