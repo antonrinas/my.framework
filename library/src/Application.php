@@ -10,10 +10,9 @@ class Application implements ApplicationInterface
 
     public function __construct()
     {
-        $dbConfig = require_once (ROOT . DS . 'config' . DS . 'db.php');
         $routes = require_once (ROOT . DS . 'config' . DS . 'routes.php');
         $generalConfig = require_once (ROOT . DS . 'config' . DS . 'config.php');
-        $config = array_merge_recursive($dbConfig, $routes, $generalConfig);
+        $config = array_merge_recursive($routes, $generalConfig);
         $this->checkConfig($config);
         $this->config = $config;
     }
@@ -22,9 +21,6 @@ class Application implements ApplicationInterface
     {
         if (!array_key_exists('development', $config)){
             throw new ControllerException("Environment settings is required. You must provide 'development' key in the config.");
-        }
-        if (!array_key_exists('db', $config)){
-            throw new ControllerException("Database settings is required. You must provide 'db' key in the config.");
         }
         if (!array_key_exists('routes', $config)){
             throw new ControllerException("Routes settings is required. You must provide 'routes' key in the config.");

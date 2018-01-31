@@ -2,6 +2,7 @@
 
 return [
     'db' => [
+        'default' => 'mysql',
         'mysql' => [
             'bd_name' => 'my_framework',
             'bd_user' => 'admin',
