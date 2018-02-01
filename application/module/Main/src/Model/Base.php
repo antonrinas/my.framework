@@ -3,17 +3,25 @@
 namespace Main\Model;
 
 use Framework\Mvc\Model\DB\TableAdapter\TableAdapterInterface;
+use Framework\QueryBuilder\QueryBuilderInterface;
+use Framework\Mvc\Model\ModelInterface;
 
-class Base
+class Base implements ModelInterface
 {
     /**
      * @var TableAdapterInterface
      */
-    private $tableAdapter;
+    protected $tableAdapter;
 
-    public function __construct(TableAdapterInterface $tableAdapter)
+    /**
+     * @var QueryBuilderInterface
+     */
+    protected $queryBuilder;
+
+    public function __construct(TableAdapterInterface $tableAdapter, QueryBuilderInterface $queryBuilder)
     {
         $this->tableAdapter = $tableAdapter;
+        $this->queryBuilder = $queryBuilder;
     }
 
     /**
@@ -22,5 +30,13 @@ class Base
     public function getTableAdapter()
     {
         return $this->tableAdapter;
+    }
+
+    /**
+     * @return QueryBuilderInterface
+     */
+    public function getQueryBuilder()
+    {
+        return $this->queryBuilder;
     }
 }

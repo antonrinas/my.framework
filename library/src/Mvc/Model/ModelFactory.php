@@ -4,6 +4,7 @@ namespace Framework\Mvc\Model;
 
 use Framework\Mvc\Model\DB\Connection\MySqlPdoConnection;
 use Framework\Mvc\Model\DB\TableAdapter\MySqlPdoTableAdapter;
+use Framework\QueryBuilder\QueryBuilderMySql;
 
 class ModelFactory
 {
@@ -45,7 +46,9 @@ class ModelFactory
             $tableAdapter = new MySqlPdoTableAdapter($connection, $this->entityClassName);
             $modelClassName = $this->modelClassName;
 
-            return new $modelClassName($tableAdapter);
+            $queryBuilder = new QueryBuilderMySql();
+
+            return new $modelClassName($tableAdapter, $queryBuilder);
         }
 
         throw new ModelException(
