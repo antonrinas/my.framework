@@ -8,6 +8,7 @@ use Framework\Mvc\Controller\Response\ResponseInterface;
 use Framework\Mvc\View\ViewModel;
 use Framework\Mvc\View\JsonModel;
 use Framework\Mvc\Controller\BaseControllerInterface;
+use Framework\Session\Session;
 
 class Dispatcher implements DispatcherInterface
 {
@@ -80,6 +81,7 @@ class Dispatcher implements DispatcherInterface
         if ($controller->getContentType() === 'application/json'){
             $controller->setView(new JsonModel());
         }
+        $controller->setSession(new Session());
 
         return $controller;
     }

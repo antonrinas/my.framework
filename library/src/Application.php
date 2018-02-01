@@ -29,18 +29,10 @@ class Application implements ApplicationInterface
 
     public function start()
     {
-        $this->initSession();
         $this->initEnviroment();
         $frontController = new FrontController($this->config);
         $response = $frontController->handleRequest();
         echo $response;
-    }
-
-    private function initSession()
-    {
-        if (!isset($_SESSION)){
-            session_start();
-        }
     }
 
     private function initEnviroment()

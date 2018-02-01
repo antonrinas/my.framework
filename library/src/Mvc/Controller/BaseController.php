@@ -5,6 +5,7 @@ namespace Framework\Mvc\Controller;
 use Framework\Mvc\Controller\Request\RequestInterface;
 use Framework\Mvc\Controller\Response\ResponseInterface;
 use Framework\Mvc\View\ViewModelInterface;
+use Framework\Session\SessionInterface;
 
 abstract class BaseController implements BaseControllerInterface
 {
@@ -34,6 +35,11 @@ abstract class BaseController implements BaseControllerInterface
      * @var ViewModelInterface
      */
     protected $view;
+
+    /**
+     * @var SessionInterface
+     */
+    protected $session;
 
     /**
      * @return RequestInterface
@@ -117,5 +123,24 @@ abstract class BaseController implements BaseControllerInterface
     public function getContentType()
     {
         return $this->contentType;
+    }
+
+    /**
+     * @param SessionInterface $session
+     *
+     * @return BaseController
+     */
+    public function setSession($session)
+    {
+        $this->session = $session;
+        return $this;
+    }
+
+    /**
+     * @return SessionInterface
+     */
+    public function getSession()
+    {
+        return $this->session;
     }
 }

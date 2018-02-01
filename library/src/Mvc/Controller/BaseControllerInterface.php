@@ -5,6 +5,7 @@ namespace Framework\Mvc\Controller;
 use Framework\Mvc\Controller\Request\RequestInterface;
 use Framework\Mvc\Controller\Response\ResponseInterface;
 use Framework\Mvc\View\ViewModelInterface;
+use Framework\Session\SessionInterface;
 
 interface BaseControllerInterface
 {
@@ -16,7 +17,7 @@ interface BaseControllerInterface
     /**
      * @param RequestInterface $request
      *
-     * @return ResponseInterface
+     * @return BaseControllerInterface
      */
     public function setRequest($request);
 
@@ -28,7 +29,7 @@ interface BaseControllerInterface
     /**
      * @param ResponseInterface $response
      *
-     * @return ResponseInterface
+     * @return BaseControllerInterface
      */
     public function setResponse($response);
 
@@ -40,7 +41,7 @@ interface BaseControllerInterface
     /**
      * @param array $moduleConfig
      *
-     * @return ResponseInterface
+     * @return BaseControllerInterface
      */
     public function setModuleConfig($moduleConfig);
 
@@ -52,7 +53,7 @@ interface BaseControllerInterface
     /**
      * @param ViewModelInterface $view
      *
-     * @return ResponseInterface
+     * @return BaseControllerInterface
      */
     public function setView($view);
 
@@ -60,4 +61,16 @@ interface BaseControllerInterface
      * @return string
      */
     public function getContentType();
+
+    /**
+     * @param SessionInterface $session
+     *
+     * @return BaseControllerInterface
+     */
+    public function setSession($session);
+
+    /**
+     * @return SessionInterface
+     */
+    public function getSession();
 }
