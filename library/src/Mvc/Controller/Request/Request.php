@@ -25,6 +25,11 @@ class Request implements RequestInterface
     private $postParams = [];
 
     /**
+     * @var array
+     */
+    private $cookies;
+
+    /**
      * @return string
      */
     public function getRequestMethod()
@@ -74,7 +79,7 @@ class Request implements RequestInterface
     public function getParam($name, $defaultValue = null)
     {
         if (array_key_exists($name, $this->params)){
-            return $this->params;
+            return $this->params[$name];
         }
         return $defaultValue;
     }
@@ -111,7 +116,7 @@ class Request implements RequestInterface
     public function getGetParam($name, $defaultValue = null)
     {
         if (array_key_exists($name, $this->getParams)){
-            return $this->getParams;
+            return $this->getParams[$name];
         }
         return $defaultValue;
     }
@@ -148,7 +153,41 @@ class Request implements RequestInterface
     public function getPostParam($name, $defaultValue = null)
     {
         if (array_key_exists($name, $this->postParams)){
-            return $this->postParams;
+            return $this->postParams[$name];
+        }
+        return $defaultValue;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
+    }
+
+    /**
+     * @param array $cookies
+     *
+     * @return Request
+     */
+    public function setCookies($cookies)
+    {
+        $this->cookies = $cookies;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @param mixed $defaultValue
+     *
+     * @return mixed
+     */
+    public function getCookie($name, $defaultValue = null)
+    {
+        if (array_key_exists($name, $this->cookies)){
+            return $this->cookies[$name];
         }
         return $defaultValue;
     }

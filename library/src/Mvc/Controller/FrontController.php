@@ -57,6 +57,7 @@ class FrontController implements FrontControllerInterface
         $this->request->setGetParams($this->router->getGetParams());
         $this->request->setParams($this->router->getParams());
         $this->request->setPostParams($_POST);
+        $this->request->setCookies($_COOKIE);
     }
 
     /**

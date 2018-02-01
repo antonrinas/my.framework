@@ -10,6 +10,9 @@ class IndexController extends BaseController
 {
     public function index()
     {
+        //$this->getResponse()->setCookie('testCookie', 'Это тестовая кука', time()+60*60*24*30);
+        //print_r($this->getRequest()->getCookies());exit();
+
         $userModel = ModelFactory::init(
             \Main\Model\User::class,
             \Main\Entity\User::class)->retrieveModel();

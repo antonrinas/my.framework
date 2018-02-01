@@ -93,4 +93,25 @@ interface RequestInterface
      * @return mixed
      */
     public function getPostParam($name, $defaultValue);
+
+    /**
+     * @return array
+     */
+    public function getCookies();
+
+    /**
+     * @param array $cookies
+     *
+     * @return Request
+     */
+    public function setCookies($cookies);
+
+    /**
+     * @param string $name
+     *
+     * @param mixed $defaultValue
+     *
+     * @return mixed
+     */
+    public function getCookie($name, $defaultValue);
 }
