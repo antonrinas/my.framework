@@ -47,6 +47,7 @@ class ModelFactory
 
             return new $modelClassName($tableAdapter);
         }
+
         throw new ModelException(
             sprintf("Connection type '%s' is not supported.",
                 $defaultConnection

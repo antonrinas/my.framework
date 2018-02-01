@@ -3,12 +3,11 @@
 namespace Framework\Mvc\Controller\Dispatcher;
 
 use Framework\Mvc\Controller\Request\RequestInterface;
-use Framework\Mvc\Controller\Response\Response;
 use Framework\Mvc\Controller\Response\ResponseInterface;
-use Framework\Mvc\View\ViewModel;
-use Framework\Mvc\View\JsonModel;
+use Framework\Mvc\View\ViewModelInterface;
+use Framework\Mvc\View\JsonModelInterface;
 use Framework\Mvc\Controller\BaseControllerInterface;
-use Framework\Session\Session;
+use Framework\Session\SessionInterface;
 
 class Dispatcher implements DispatcherInterface
 {
@@ -23,17 +22,70 @@ class Dispatcher implements DispatcherInterface
     private $request;
 
     /**
-     * Dispatcher constructor.
-     * @param $config
-     * @param RequestInterface $request
+     * @var ResponseInterface
      */
-    public function __construct($config, RequestInterface $request)
+    private $response;
+
+    /**
+     * @var ViewModelInterface
+     */
+    private $viewModel;
+
+    /**
+     * @var JsonModelInterface
+     */
+    private $jsonModel;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * Dispatcher constructor.
+     * @param ResponseInterface $response
+     * @param ViewModelInterface $viewModel
+     * @param JsonModelInterface $jsonModel
+     * @param SessionInterface $session
+     */
+    public function __construct(
+        ResponseInterface $response,
+        ViewModelInterface $viewModel,
+        JsonModelInterface $jsonModel,
+        SessionInterface $session
+    )
+    {
+        $this->response = $response;
+        $this->viewModel = $viewModel;
+        $this->jsonModel = $jsonModel;
+        $this->session = $session;
+    }
+
+    /**
+     * @param array $config
+     *
+     * @return $this|Dispatcher
+     *
+     * @throws DispatcherException
+     */
+    public function setConfig($config)
     {
         $this->checkConfig($config);
         $this->config = $config;
-        $this->request = $request;
+        return $this;
     }
 
+    /**
+     * @param RequestInterface $request
+     *
+     * @return Dispatcher
+     */
+    public function setRequest($request)
+    {
+        $this->request = $request;
+        return $this;
+    }
+    
     /**
      * @return ResponseInterface
      *
@@ -43,14 +95,13 @@ class Dispatcher implements DispatcherInterface
     {
         $route = $this->config;
         $controller = $this->initController();
-        $response = new Response();
-        $response->setHeader('Content-Type', $controller->getContentType());
-        $controller->setResponse($response);
+        $this->response->setHeader('Content-Type', $controller->getContentType());
+        $controller->setResponse($this->response);
         $responseContent = call_user_func_array([$controller, $route['method']], $this->request->getParams());
-        $response = $controller->getResponse();
-        $response->setContent($responseContent);
+        $this->response = $controller->getResponse();
+        $this->response->setContent($responseContent);
 
-        return $response;
+        return $this->response;
     }
 
     /**
@@ -73,15 +124,16 @@ class Dispatcher implements DispatcherInterface
         $controller->setModuleConfig($moduleConfig);
 
         if ($controller->getContentType() === 'text/html'){
-            $viewModel = new ViewModel($moduleConfig);
-            $viewModel->setControllerName($controllerName)
-                ->setMethodName($route['method']);
-            $controller->setView($viewModel);
+            $this->viewModel->setModuleConfig($moduleConfig)
+                            ->setControllerName($controllerName)
+                            ->setMethodName($route['method']);
+
+            $controller->setView($this->viewModel);
         }
         if ($controller->getContentType() === 'application/json'){
-            $controller->setView(new JsonModel());
+            $controller->setView($this->jsonModel);
         }
-        $controller->setSession(new Session());
+        $controller->setSession($this->session);
 
         return $controller;
     }

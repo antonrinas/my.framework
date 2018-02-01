@@ -35,6 +35,15 @@ interface ViewModelInterface
     public function getModuleConfig();
 
     /**
+     * @param array $moduleConfig
+     *
+     * @return ViewModel
+     *
+     * @throws ViewModelException
+     */
+    public function setModuleConfig($moduleConfig);
+
+    /**
      * @return string
      */
     public function getControllerName();

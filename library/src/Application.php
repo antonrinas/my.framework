@@ -2,19 +2,25 @@
 
 namespace Framework;
 
-use Framework\Mvc\Controller\FrontController;
+use Framework\Mvc\Controller\FrontControllerInterface;
 
 class Application implements ApplicationInterface
 {
+    /**
+     * @var array
+     */
     private $config;
 
-    public function __construct()
+    /**
+     * @var FrontControllerInterface
+     */
+    private $frontController;
+
+    public function __construct($config, FrontControllerInterface $frontController)
     {
-        $routes = require_once (ROOT . DS . 'config' . DS . 'routes.php');
-        $generalConfig = require_once (ROOT . DS . 'config' . DS . 'config.php');
-        $config = array_merge_recursive($routes, $generalConfig);
         $this->checkConfig($config);
         $this->config = $config;
+        $this->frontController = $frontController;
     }
 
     private function checkConfig($config)
@@ -30,8 +36,7 @@ class Application implements ApplicationInterface
     public function start()
     {
         $this->initEnviroment();
-        $frontController = new FrontController($this->config);
-        $response = $frontController->handleRequest();
+        $response = $this->frontController->handleRequest();
         echo $response;
     }
 

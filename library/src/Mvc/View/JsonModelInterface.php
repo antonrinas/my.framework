@@ -13,7 +13,7 @@ interface JsonModelInterface
     /**
      * @param array $params
      *
-     * @return ViewModel
+     * @return JsonModelInterface
      */
     public function setParams($params);
 

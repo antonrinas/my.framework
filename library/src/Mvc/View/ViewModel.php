@@ -36,10 +36,9 @@ class ViewModel implements ViewModelInterface
      */
     private $viewPath;
 
-    public function __construct($moduleConfig)
+    public function __construct()
     {
-        $this->checkConfig($moduleConfig);
-        $this->moduleConfig = $moduleConfig;
+
     }
 
     /**
@@ -113,9 +112,12 @@ class ViewModel implements ViewModelInterface
      * @param array $moduleConfig
      *
      * @return ViewModel
+     *
+     * @throws ViewModelException
      */
     public function setModuleConfig($moduleConfig)
     {
+        $this->checkConfig($moduleConfig);
         $this->moduleConfig = $moduleConfig;
         return $this;
     }
@@ -193,8 +195,9 @@ class ViewModel implements ViewModelInterface
         $content = $this->renderPhpToString($completeViewPath);
 
         if ($this->getLayoutName()){
-            $viewModel = new ViewModel($this->getModuleConfig());
-            $viewModel->setViewPath(DS . '..' . DS . 'layout' . DS . $this->getLayoutName() . '.php')
+            $viewModel = new ViewModel();
+            $viewModel->setModuleConfig($this->getModuleConfig())
+                      ->setViewPath(DS . '..' . DS . 'layout' . DS . $this->getLayoutName() . '.php')
                       ->setLayoutName(null)
                       ->setParams(['content' => $content,]);
 
