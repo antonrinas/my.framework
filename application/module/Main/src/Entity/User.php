@@ -2,17 +2,35 @@
 
 namespace Main\Entity;
 
-class User
+class User extends BaseEntity
 {
+    /**
+     * @var string
+     */
     private $id;
+    /**
+     * @var string
+     */
     private $name;
+    /**
+     * @var string
+     */
     private $email;
+    /**
+     * @var string
+     */
     private $password;
+    /**
+     * @var string
+     */
     private $created_at;
+    /**
+     * @var string
+     */
     private $updated_at;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getId()
     {
@@ -20,17 +38,7 @@ class User
     }
 
     /**
-     * @param mixed $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getName()
     {
@@ -38,7 +46,7 @@ class User
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      * @return User
      */
     public function setName($name)
@@ -48,7 +56,7 @@ class User
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
@@ -56,7 +64,7 @@ class User
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
      * @return User
      */
     public function setEmail($email)
@@ -66,7 +74,7 @@ class User
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPassword()
     {
@@ -74,7 +82,7 @@ class User
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      * @return User
      */
     public function setPassword($password)
@@ -84,7 +92,7 @@ class User
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCreatedAt()
     {
@@ -92,7 +100,7 @@ class User
     }
 
     /**
-     * @param mixed $created_at
+     * @param string $created_at
      * @return User
      */
     public function setCreatedAt($created_at)
@@ -102,7 +110,7 @@ class User
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUpdatedAt()
     {
@@ -110,7 +118,7 @@ class User
     }
 
     /**
-     * @param mixed $updated_at
+     * @param string $updated_at
      * @return User
      */
     public function setUpdatedAt($updated_at)
