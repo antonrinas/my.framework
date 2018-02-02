@@ -36,13 +36,14 @@ class MySqlPdoTableAdapter implements TableAdapterInterface
 
     /**
      * @param string $sql
+     * @param array $params
      *
      * @return $this->entityClassName
      */
-    public function fetch($sql)
+    public function fetch($sql, $params = [])
     {
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         return $stmt->fetchObject($this->entityClassName);
@@ -50,13 +51,14 @@ class MySqlPdoTableAdapter implements TableAdapterInterface
 
     /**
      * @param string $sql
+     * @param array $params
      *
      * @return array
      */
-    public function fetchAll($sql)
+    public function fetchAll($sql, $params = [])
     {
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         $result = [];
@@ -72,10 +74,19 @@ class MySqlPdoTableAdapter implements TableAdapterInterface
 
     /**
      * @param string $sql
+     * @param array $params
      */
-    public function execute($sql)
+    public function execute($sql, $params = [])
     {
         $stmt = $this->connection->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function retrieveLastInsertId()
+    {
+        return $this->connection->lastInsertId();
     }
 }

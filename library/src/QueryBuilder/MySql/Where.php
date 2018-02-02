@@ -26,14 +26,15 @@ class Where implements QueryPartInterface
      */
     private $params = [];
 
-    public function __construct($columnName, $value, $operator = '=')
+    public function __construct($columnName, $value, $operator = '=', $objectIndex)
     {
         $this->columnName = $columnName;
         $this->value = $value;
         $this->operator = $operator;
 
-        $hash = md5($this->columnName . $this->value);
-        $paramName = ':'.$this->columnName . '_' . $hash;
+        $changedColumnName = str_replace('.', '_', $columnName);
+        $hash = md5( $columnName . $this->value. $objectIndex);
+        $paramName = ':'.$changedColumnName . '_' . $hash;
         $this->params[$paramName] = $this->value;
     }
 
@@ -49,7 +50,7 @@ class Where implements QueryPartInterface
     {
         reset($this->params);
         $paramName = key($this->params);
-        $query  = "$this->columnName $this->operator $paramName";
+        $query  = "$this->columnName $this->operator $paramName\n";
 
         return $query;
     }

@@ -26,12 +26,13 @@ class Update implements QueryPartInterface
      */
     private $params = [];
 
-    public function __construct($tableName, $values)
+    public function __construct($tableName, $values, $objectIndex)
     {
         $this->tableName = $tableName;
         foreach ($values as $columnName => $value){
-            $hash = md5($columnName . $value);
-            $paramName = ':'.$columnName . '_' . $hash;
+            $changedColumnName = str_replace('.', '_', $columnName);
+            $hash = md5($columnName . $value . $objectIndex);
+            $paramName = ':'.$changedColumnName . '_' . $hash;
             $this->params[$paramName] = $value;
 
             $this->sets[] = "$columnName = $paramName";

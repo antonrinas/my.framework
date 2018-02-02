@@ -26,7 +26,7 @@ class WhereIsNotNull implements QueryPartInterface
 
     public function compileQueryPart()
     {
-        $query  = "$this->columnName IS NOT NULL";
+        $query  = "$this->columnName IS NOT NULL\n";
 
         return $query;
     }

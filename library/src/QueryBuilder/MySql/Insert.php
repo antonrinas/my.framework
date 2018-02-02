@@ -21,11 +21,12 @@ class Insert implements QueryPartInterface
      */
     private $params = [];
 
-    public function __construct($tableName, $values)
+    public function __construct($tableName, $values, $objectIndex)
     {
         $this->tableName = $tableName;
         foreach ($values as $columnName => $value){
-            $hash = md5($columnName . $value);
+            $columnName = str_replace('.', '_', $columnName);
+            $hash = md5($columnName . $value . $objectIndex);
             $this->params[':'.$columnName . '_' . $hash] = $value;
         }
         $this->values = $values;

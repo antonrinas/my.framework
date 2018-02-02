@@ -12,17 +12,22 @@ interface TableAdapterInterface
      *
      * @param string $sql
      */
-    public function fetch($sql);
+    public function fetch($sql, $params);
 
     /**
      * Fetch all rows and return it as array of objects
      *
      * @param string $sql
      */
-    public function fetchAll($sql);
+    public function fetchAll($sql, $params);
 
     /**
      * @param string $sql
      */
-    public function execute($sql);
+    public function execute($sql, $params);
+
+    /**
+     * @return mixed
+     */
+    public function retrieveLastInsertId();
 }
