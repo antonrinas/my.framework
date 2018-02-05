@@ -57,7 +57,7 @@ class Base implements ModelInterface, BaseModelInterface
      * @param mixed $id
      * @param array $columns
      *
-     * @return mixed
+     * @return EntityInterface | null
      */
     public function find($id, $columns = ['*'])
     {
@@ -65,6 +65,7 @@ class Base implements ModelInterface, BaseModelInterface
         $queryBuilder->select($this->tableName, $columns)
                      ->where($this->primaryKey, $id);
         $queryBuilderResult = $queryBuilder->compileQuery();
+        $queryBuilder->reset();
 
         return $this->getTableAdapter()->fetch($queryBuilderResult['query'], $queryBuilderResult['params']);
     }
@@ -83,6 +84,7 @@ class Base implements ModelInterface, BaseModelInterface
             $queryBuilder->limit($limit, $offset);
         }
         $queryBuilderResult = $queryBuilder->compileQuery();
+        $queryBuilder->reset();
 
         return $this->getTableAdapter()->fetchAll($queryBuilderResult['query'], $queryBuilderResult['params']);
     }
@@ -110,19 +112,21 @@ class Base implements ModelInterface, BaseModelInterface
         if (!$id) {
             $queryBuilder->insert($this->tableName, $data);
             $queryBuilderResult = $queryBuilder->compileQuery();
+            $queryBuilder->reset();
             $this->getTableAdapter()->execute($queryBuilderResult['query'], $queryBuilderResult['params']);
-            $id = $this->getTableAdapter()->retrieveLastInsertId();
+            return $this->getTableAdapter()->retrieveLastInsertId();
+
+        }
+        if ($this->find($id, [$this->primaryKey])){
+            $queryBuilder->update($this->tableName, $data)->where($this->primaryKey, $id);
+            $queryBuilderResult = $queryBuilder->compileQuery();
+            $queryBuilder->reset();
+            $this->getTableAdapter()->execute($queryBuilderResult['query'], $queryBuilderResult['params']);
         } else {
-            if ($this->find($id, [$this->primaryKey])){
-                $queryBuilder->update($this->tableName, $data)->where($this->primaryKey, $id);
-                $queryBuilderResult = $queryBuilder->compileQuery();
-                $this->getTableAdapter()->execute($queryBuilderResult['query'], $queryBuilderResult['params']);
-            } else {
-                throw new ModelException(sprintf("Row with ID '%s' was not found in '%s'",
-                    $id,
-                    $this->tableName
-                ));
-            }
+            throw new ModelException(sprintf("Row with ID '%s' was not found in '%s'",
+                $id,
+                $this->tableName
+            ));
         }
 
         return $id;
@@ -136,6 +140,7 @@ class Base implements ModelInterface, BaseModelInterface
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->delete($this->tableName)->where($this->primaryKey, $id);
         $queryBuilderResult = $queryBuilder->compileQuery();
+        $queryBuilder->reset();
         $this->getTableAdapter()->execute($queryBuilderResult['query'], $queryBuilderResult['params']);
     }
 }

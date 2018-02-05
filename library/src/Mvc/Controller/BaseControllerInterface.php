@@ -46,12 +46,12 @@ interface BaseControllerInterface
     public function setModuleConfig($moduleConfig);
 
     /**
-     * @return ViewModelInterface
+     * @return ViewModelInterface | JsonModelInterface
      */
     public function getView();
 
     /**
-     * @param ViewModelInterface $view
+     * @param ViewModelInterface | JsonModelInterface $view
      *
      * @return BaseControllerInterface
      */

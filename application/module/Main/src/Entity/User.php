@@ -7,27 +7,27 @@ class User extends BaseEntity
     /**
      * @var string
      */
-    private $id;
+    protected $id;
     /**
      * @var string
      */
-    private $name;
+    protected $name;
     /**
      * @var string
      */
-    private $email;
+    protected $email;
     /**
      * @var string
      */
-    private $password;
+    protected $password;
     /**
      * @var string
      */
-    private $created_at;
+    protected $created_at;
     /**
      * @var string
      */
-    private $updated_at;
+    protected $updated_at;
 
     /**
      * @return string

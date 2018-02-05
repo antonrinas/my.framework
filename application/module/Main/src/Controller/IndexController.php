@@ -13,8 +13,6 @@ class IndexController extends BaseController
             \Main\Model\User::class,
             \Main\Entity\User::class)->retrieveModel();
 
-        var_dump($userModel->find(1));exit();
-
         return $this->getView()->setParams([])->render();
     }
 }

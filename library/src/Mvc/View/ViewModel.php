@@ -36,6 +36,11 @@ class ViewModel implements ViewModelInterface
      */
     private $viewPath;
 
+    /**
+     * @var bool
+     */
+    private $noEscape = false;
+
     public function __construct()
     {
 
@@ -179,11 +184,30 @@ class ViewModel implements ViewModelInterface
     }
 
     /**
+     * @param bool $noEscape
+     * @return ViewModel
+     */
+    public function setNoEscape($noEscape)
+    {
+        $this->noEscape = $noEscape;
+        return $this;
+    }
+
+    /**
      * @return string
+     *
+     * @throws ViewModelException
      */
     public function render()
     {
-        extract($this->params);
+        foreach ($this->params as $key => $value) {
+            if ($key === 'content') {
+                continue;
+            }
+            if (!$this->noEscape){
+                $this->params[$key] = $this->escape($value);
+            }
+        }
 
         if ($this->getViewPath()){
             $completeViewPath = $this->moduleConfig['views_path'].$this->getViewPath();
@@ -205,6 +229,11 @@ class ViewModel implements ViewModelInterface
         }
 
         return $content;
+    }
+
+    private function escape($string)
+    {
+        return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
     }
 
     /**

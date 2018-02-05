@@ -78,5 +78,16 @@ interface ViewModelInterface
      */
     public function setViewPath($viewPath);
 
+    /**
+     * @param bool $noEscape
+     * @return ViewModel
+     */
+    public function setNoEscape($noEscape);
+
+    /**
+     * @return string
+     *
+     * @throws ViewModelException
+     */
     public function render();
 }

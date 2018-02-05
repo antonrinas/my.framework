@@ -5,6 +5,7 @@ namespace Framework\Mvc\Controller;
 use Framework\Mvc\Controller\Request\RequestInterface;
 use Framework\Mvc\Controller\Response\ResponseInterface;
 use Framework\Mvc\View\ViewModelInterface;
+use Framework\Mvc\View\JsonModelInterface;
 use Framework\Session\SessionInterface;
 
 abstract class BaseController implements BaseControllerInterface
@@ -32,7 +33,7 @@ abstract class BaseController implements BaseControllerInterface
     protected $moduleConfig;
 
     /**
-     * @var ViewModelInterface
+     * @var ViewModelInterface | JsonModelInterface
      */
     protected $view;
 
@@ -104,7 +105,7 @@ abstract class BaseController implements BaseControllerInterface
     }
 
     /**
-     * @return ViewModelInterface
+     * @return ViewModelInterface | JsonModelInterface
      */
     public function getView()
     {
@@ -112,7 +113,7 @@ abstract class BaseController implements BaseControllerInterface
     }
 
     /**
-     * @param ViewModelInterface $view
+     * @param ViewModelInterface | JsonModelInterface $view
      *
      * @return BaseController
      */
