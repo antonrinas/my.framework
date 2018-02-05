@@ -30,6 +30,11 @@ class Request implements RequestInterface
     private $cookies;
 
     /**
+     * @var array
+     */
+    private $files;
+
+    /**
      * @return string
      */
     public function getRequestMethod()
@@ -190,5 +195,24 @@ class Request implements RequestInterface
             return $this->cookies[$name];
         }
         return $defaultValue;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @param array $files
+     *
+     * @return Request
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+        return $this;
     }
 }

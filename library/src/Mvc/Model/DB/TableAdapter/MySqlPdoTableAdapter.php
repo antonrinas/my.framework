@@ -37,14 +37,18 @@ class MySqlPdoTableAdapter implements TableAdapterInterface
     /**
      * @param string $sql
      * @param array $params
+     * @param bool $asArray
      *
      * @return $this->entityClassName
      */
-    public function fetch($sql, $params = [])
+    public function fetch($sql, $params = [], $asArray = false)
     {
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        if ($asArray){
+            return $stmt->fetchAll();
+        }
 
         return $stmt->fetchObject($this->entityClassName);
     }
@@ -52,14 +56,18 @@ class MySqlPdoTableAdapter implements TableAdapterInterface
     /**
      * @param string $sql
      * @param array $params
+     * @param bool $asArray
      *
      * @return array
      */
-    public function fetchAll($sql, $params = [])
+    public function fetchAll($sql, $params = [], $asArray = false)
     {
         $stmt = $this->connection->prepare($sql);
         $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        if ($asArray){
+            return $stmt->fetchAll();
+        }
 
         $result = [];
         do {

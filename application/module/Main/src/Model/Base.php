@@ -12,6 +12,7 @@ class Base implements ModelInterface, BaseModelInterface
 {
     protected $tableName;
     protected $primaryKey = 'id';
+    protected $asArray = false;
 
     /**
      * @var TableAdapterInterface
@@ -46,6 +47,17 @@ class Base implements ModelInterface, BaseModelInterface
     }
 
     /**
+     * @param bool $asArray
+     *
+     * @return Base
+     */
+    public function setAsArray($asArray)
+    {
+        $this->asArray = $asArray;
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function countAll()
@@ -76,7 +88,7 @@ class Base implements ModelInterface, BaseModelInterface
      *
      * @return [EntityInterface]|[]
      */
-    public function fetchAll($limit = null, $offset = 0)
+    public function fetchAll($limit = null, $offset = 0, $asArray = false)
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->select($this->tableName, ['*']);
@@ -86,7 +98,7 @@ class Base implements ModelInterface, BaseModelInterface
         $queryBuilderResult = $queryBuilder->compileQuery();
         $queryBuilder->reset();
 
-        return $this->getTableAdapter()->fetchAll($queryBuilderResult['query'], $queryBuilderResult['params']);
+        return $this->getTableAdapter()->fetchAll($queryBuilderResult['query'], $queryBuilderResult['params'], $asArray);
     }
 
     /**

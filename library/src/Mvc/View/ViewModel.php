@@ -9,7 +9,7 @@ class ViewModel implements ViewModelInterface
     /**
      * @var array
      */
-    private $params;
+    private $params = [];
 
     /**
      * @var string

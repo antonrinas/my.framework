@@ -7,6 +7,13 @@ use Main\Entity\EntityInterface;
 interface BaseModelInterface
 {
     /**
+     * @param bool $asArray
+     *
+     * @return BaseModelInterface
+     */
+    public function setAsArray($asArray);
+
+    /**
      * @return int
      */
     public function countAll();

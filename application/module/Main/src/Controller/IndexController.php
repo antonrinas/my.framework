@@ -9,10 +9,6 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        $userModel = ModelFactory::init(
-            \Main\Model\User::class,
-            \Main\Entity\User::class)->retrieveModel();
-
-        return $this->getView()->setParams([])->render();
+        return $this->getView()->render();
     }
 }

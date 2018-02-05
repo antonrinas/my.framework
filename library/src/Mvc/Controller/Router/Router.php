@@ -69,12 +69,12 @@ class Router implements RouterInterface
      */
     private function findMatchedRoute()
     {
-        foreach ($this->routes as $route => $rules){
+        foreach ($this->routes as $rules){
             if ($rules['request_method'] !== $_SERVER['REQUEST_METHOD']){
                 continue;
             }
             if (array_key_exists('params', $rules)){
-                $pattern = str_replace("/", "\/", $route);
+                $pattern = str_replace("/", "\/", $rules['url']);
                 foreach ($rules['params'] as $paramName => $regex){
                     $pattern = str_replace($paramName, $regex, $pattern);
                 }
@@ -87,15 +87,13 @@ class Router implements RouterInterface
 
                     $matches = preg_replace('/' . $pattern . '/', implode('|', $replacement), $this->url);
                     $this->params = explode('|', $matches);
-                    $rules['name'] = $route;
                     $this->matchedRoute = $rules;
 
                     return true;
                 }
             } else {
-                $pattern = str_replace("/", "\/", $route);
+                $pattern = str_replace("/", "\/", $rules['url']);
                 if (preg_match('/' . $pattern . '$/', $this->url)){
-                    $rules['name'] = $route;
                     $this->matchedRoute = $rules;
 
                     return true;

@@ -114,4 +114,16 @@ interface RequestInterface
      * @return mixed
      */
     public function getCookie($name, $defaultValue);
+
+    /**
+     * @return array
+     */
+    public function getFiles();
+
+    /**
+     * @param array $files
+     *
+     * @return Request
+     */
+    public function setFiles($files);
 }
