@@ -73,4 +73,16 @@ interface BaseControllerInterface
      * @return SessionInterface
      */
     public function getSession();
+
+    /**
+     * @return array
+     */
+    public function getRoute();
+
+    /**
+     * @param array $route
+     *
+     * @return BaseControllerInterface
+     */
+    public function setRoute($route);
 }

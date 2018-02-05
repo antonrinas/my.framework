@@ -87,6 +87,7 @@ class Router implements RouterInterface
 
                     $matches = preg_replace('/' . $pattern . '/', implode('|', $replacement), $this->url);
                     $this->params = explode('|', $matches);
+                    $rules['name'] = $route;
                     $this->matchedRoute = $rules;
 
                     return true;
@@ -94,6 +95,7 @@ class Router implements RouterInterface
             } else {
                 $pattern = str_replace("/", "\/", $route);
                 if (preg_match('/' . $pattern . '$/', $this->url)){
+                    $rules['name'] = $route;
                     $this->matchedRoute = $rules;
 
                     return true;

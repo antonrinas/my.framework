@@ -120,8 +120,9 @@ class Dispatcher implements DispatcherInterface
         $moduleConfig = require_once (ROOT . DS . 'application' . DS . 'module' . DS . $moduleName . DS . 'config' . DS . 'config.php');
         $controller = new $className;
         $this->checkControllerContentType($controller);
-        $controller->setRequest($this->request);
-        $controller->setModuleConfig($moduleConfig);
+        $controller->setRequest($this->request)
+                   ->setModuleConfig($moduleConfig)
+                   ->setRoute($route);
 
         if ($controller->getContentType() === 'text/html'){
             $this->viewModel->setModuleConfig($moduleConfig)

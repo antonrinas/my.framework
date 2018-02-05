@@ -42,6 +42,11 @@ abstract class BaseController implements BaseControllerInterface
     protected $session;
 
     /**
+     * @var array
+     */
+    protected $route;
+
+    /**
      * @return RequestInterface
      */
     public function getRequest()
@@ -142,5 +147,24 @@ abstract class BaseController implements BaseControllerInterface
     public function getSession()
     {
         return $this->session;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    /**
+     * @param array $route
+     *
+     * @return BaseControllerInterface
+     */
+    public function setRoute($route)
+    {
+        $this->route = $route;
+        return $this;
     }
 }
