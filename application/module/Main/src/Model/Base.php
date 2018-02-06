@@ -62,7 +62,13 @@ class Base implements ModelInterface, BaseModelInterface
      */
     public function countAll()
     {
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder->select($this->tableName, ['COUNT(*) AS counter']);
+        $queryBuilderResult = $queryBuilder->compileQuery();
+        $queryBuilder->reset();
+        $result = $this->getTableAdapter()->fetch($queryBuilderResult['query'], $queryBuilderResult['params'], true);
 
+        return $result[0]['counter'];
     }
 
     /**

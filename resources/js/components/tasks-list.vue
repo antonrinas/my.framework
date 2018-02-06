@@ -11,127 +11,93 @@
             :sort-by.sync="filters.sortBy"
             :sort-desc.sync="filters.sortDesc"
             v-on:sort-changed="changeSorting"
-        ></b-table>
+        >
+            <template slot="user_name" slot-scope="data">
+                {{ data.item.user_name }}
+            </template>
+            <template slot="email" slot-scope="data">
+                {{ data.item.email }}
+            </template>
+            <template slot="description" slot-scope="data">
+                {{ data.item.description }}
+            </template>
+            <template slot="path_thumb_1" slot-scope="data">
+                <template v-if="data.item.path_thumb_1">
+                    <img v-bind:src="data.item.path_thumb_1" alt="Изображение к задаче" style="width: 100%;" />
+                </template>
+                <template v-else>
+                    отсутствует
+                </template>
+            </template>
+            <template slot="status" slot-scope="data">
+                <template v-if="data.item.status === '2'">
+                    выполнено
+                </template>
+                <template v-else>
+                    не выполнено
+                </template>
+            </template>
+        </b-table>
+        <p class="text-center" v-show="items.length === 0">Записи отсутствуют</p>
 
-        <b-button-group size="sm">
-            <b-button v-on:click="showEditModal" variant="success">Добавить</b-button>
-            <b-button v-on:click="retrieveTasks" variant="info">Обновить</b-button>
-        </b-button-group>
+        <div class="row">
+            <div class="col-md-4">
+                <b-button-group size="sm">
+                    <b-button v-on:click="showForm = true" variant="success">Добавить</b-button>
+                    <b-button v-on:click="retrieveTasks" variant="primary">Обновить</b-button>
+                </b-button-group>
+            </div>
+            <div class="col-md-8">
+                <b-pagination
+                    align="right"
+                    :total-rows="totalRows"
+                    v-model="filters.page"
+                    :per-page="perPage"
+                    v-on:input="retrieveTasks"
+                ></b-pagination>
+            </div>
+        </div>
 
-        <b-modal ref="myModal" v-bind:title="message.title" hide-footer>
-            <div class="modal-body">
-                <p>{{ message.content }}</p>
-            </div>
-            <div class="modal-footer">
-                <b-button v-on:click="hideModal" variant="outline-danger">Закрыть</b-button>
-            </div>
-        </b-modal>
+        <edit-form
+                v-bind:show-form="showForm"
+                v-on:hide="showForm = false"
+                v-on:added="retrieveTasks"
+        ></edit-form>
 
-        <b-modal ref="editModal" title="Задача" hide-footer>
-            <div class="modal-body">
-                <b-form v-on:submit.prevent="saveFormData" v-on:reset="resetForm">
-                    <b-form-group label="Имя пользователя*:" label-for="user_name">
-                        <b-form-input id="user_name"
-                                      v-bind:class="{'is-invalid': formErrors.user_name}"
-                                      type="text"
-                                      v-model="formData.user_name"
-                                      required
-                                      placeholder="Введите имя пользователя"
-                                      v-on:input="formErrors.user_name = null"
-                        ></b-form-input>
-                        <div v-if="formErrors.user_name" class="error_message">
-                            {{ formErrors.user_name }}
-                        </div>
-                    </b-form-group>
-                    <b-form-group label="E-mail*:" label-for="email">
-                        <b-form-input id="email"
-                                      v-bind:class="{'is-invalid': formErrors.email}"
-                                      type="email"
-                                      v-model="formData.email"
-                                      required
-                                      placeholder="Введите E-mail"
-                                      v-on:input="formErrors.email = null"
-                        ></b-form-input>
-                        <div v-if="formErrors.email" class="error_message">
-                            {{ formErrors.email }}
-                        </div>
-                    </b-form-group>
-                    <b-form-group label="Задача*:" label-for="description">
-                        <b-form-textarea id="description"
-                                         v-bind:class="{'is-invalid': formErrors.description}"
-                                         v-model="formData.description"
-                                         placeholder="Опишите задачу"
-                                         :rows="3"
-                                         :max-rows="6"
-                                         v-on:input="formErrors.description = null"
-                        ></b-form-textarea>
-                        <div v-if="formErrors.description" class="error_message">
-                            {{ formErrors.description }}
-                        </div>
-                    </b-form-group>
-                    <b-form-group label="Изображение:" label-for="image">
-                        <b-form-file
-                                id="image"
-                                :state="formErrors.image ? 'invalid' : null"
-                                accept="image/jpeg, image/png, image/gif"
-                                v-model="formData.image"
-                                placeholder="Файл не указан"
-                                choose-label="Выберите файл"
-                                v-on:input="formErrors.image = null"
-                        ></b-form-file>
-                        <div v-if="formErrors.image" class="error_message">
-                            {{ formErrors.image }}
-                        </div>
-                    </b-form-group>
-                    <b-button type="submit" variant="outline-success">Сохранить</b-button>
-                </b-form>
-            </div>
-        </b-modal>
+        <messanger
+                v-bind:show-message="showMessage"
+                v-bind:title="message.title"
+                v-bind:content="message.content"
+                v-on:hide="showMessage = false"
+        ></messanger>
     </div>
 </template>
 
 <script>
-
+    import editForm from './edit-form.vue';
+    import messanger from './messanger.vue';
     import bTable from 'bootstrap-vue/es/components/table/table';
-    import bModal from 'bootstrap-vue/es/components/modal/modal';
     import bButton from 'bootstrap-vue/es/components/button/button';
     import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
-    import bForm from 'bootstrap-vue/es/components/form/form';
-    import bFormGroup from 'bootstrap-vue/es/components/form-group/form-group';
-    import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
-    import bFormTextarea from 'bootstrap-vue/es/components/form-textarea/form-textarea';
-    import bFormFile from 'bootstrap-vue/es/components/form-file/form-file';
+    import bPagination from 'bootstrap-vue/es/components/pagination/pagination';
 
     export default {
         components: {
             'b-table': bTable,
-            'b-modal': bModal,
             'b-button': bButton,
             'b-button-group': bButtonGroup,
-            'b-form': bForm,
-            'b-form-group': bFormGroup,
-            'b-form-input': bFormInput,
-            'b-form-textarea': bFormTextarea,
-            'b-form-file': bFormFile,
+            'b-pagination': bPagination,
+            'edit-form': editForm,
+            'messanger': messanger,
         },
         data(){
             return {
+                totalRows: null,
+                perPage: null,
                 filters: {
                     sortBy: 'user_name',
                     sortDesc: false,
                     page: 1,
-                },
-                formData: {
-                    user_name: null,
-                    email: null,
-                    description: null,
-                    image: null,
-                },
-                formErrors: {
-                    user_name: null,
-                    email: null,
-                    description: null,
-                    image: null,
                 },
                 message: {
                     title: null,
@@ -154,7 +120,7 @@
                         label: 'Задача',
                     },
                     {
-                        key: 'image',
+                        key: 'path_thumb_1',
                         sortable: false,
                         label: 'Изображение',
                     },
@@ -165,7 +131,8 @@
                     },
                 ],
                 items: [],
-                uploadPercentCompleted: null,
+                showForm: false,
+                showMessage: false,
             }
         },
         mounted: function () {
@@ -188,6 +155,8 @@
                 }).then(function (response) {
                     if (response.status === 200){
                         vueInstance.items = response.data.data;
+                        vueInstance.totalRows = parseInt(response.data.total_rows);
+                        vueInstance.perPage = parseInt(response.data.per_page);
                     } else {
                         vueInstance.makeMessage('Ошибка', response.data.message);
                         console.log('Возникла ошибка ' + response.status + ': ' + response.data.message_for_developer);
@@ -196,55 +165,11 @@
                     console.log(error);
                 });
             },
-            showModal: function() {
-                this.$refs.myModal.show();
-            },
-            showEditModal: function() {
-                this.$refs.editModal.show();
-            },
-            hideModal: function() {
-                this.$refs.myModal.hide();
-            },
-            hideEditModal: function() {
-                this.$refs.editModal.hide();
-            },
-            saveFormData: function() {
-                var vueInstance = this;
-                var data = new FormData();
-                data.append('user_name', this.formData.user_name);
-                data.append('email', this.formData.email);
-                data.append('description', this.formData.description);
-                data.append('image', this.formData.image);
-
-                axios.post('/api/tasks', data, {
-                    onUploadProgress: function(progressEvent) {
-                        vueInstance.uploadPercentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
-                    }
-                }).then(function (response) {
-                    if (response.status === 201){
-                        if (response.data.status === 'warning'){
-                            vueInstance.formErrors = response.data.messages;
-                        } else {
-                            vueInstance.hideEditModal();
-                            vueInstance.retrieveTasks();
-                        }
-                    } else {
-                        vueInstance.makeMessage('Ошибка', response.data.message);
-                        console.log('Возникла ошибка ' + response.status + ': ' + response.data.message_for_developer);
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            resetForm: function() {
-
-            },
             makeMessage: function(title, message) {
-                vueInstance.message.title = title;
-                vueInstance.message.content = message;
-                vueInstance.showModal();
-            }
+                this.message.title = title;
+                this.message.content = message;
+                this.showMessage = true;
+            },
         },
     }
 </script>
@@ -252,8 +177,5 @@
 <style scoped>
     h2 {
         color: green;
-    }
-    .error_message {
-        color: red;
     }
 </style>

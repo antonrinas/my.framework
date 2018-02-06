@@ -2,9 +2,167 @@
 h2[data-v-a222a3d6] {
     color: green;
 }
-.error_message[data-v-a222a3d6] {
+
+.error_message[data-v-4dc20b3f] {
     color: red;
 }
+
+/*
+  This CSS can be removed once Bootstrap V4.beta.3 is released
+  https://github.com/twbs/bootstrap/pull/24510
+  Once BSV4.beta.3 is released, the script section can be moved into the modal.js file
+  V4.beta.3 will be changing modal margin to rem units
+*/
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    /* min-height: calc(100% - (1rem * 2)); */
+    min-height: calc(100% - (10px * 2));
+}
+.modal-dialog-centered .modal-content {
+    width: 100%;
+}
+@media (min-width: 576px) {
+.modal-dialog-centered {
+        /* min-height: calc(100% - (1.75rem * 2)); */
+        min-height: calc(100% - (30px * 2));
+}
+}
+
+/* Special styling for type=range and type=color input */
+input.form-control[type="range"],
+input.form-control[type="color"] {
+    height: 2.25rem;
+}
+input.form-control.form-control-sm[type="range"],
+input.form-control.form-control-sm[type="color"] {
+    height: 1.9375rem;
+}
+input.form-control.form-control-lg[type="range"],
+input.form-control.form-control-lg[type="color"] {
+    height: 3rem;
+}
+/* Less padding on type=color */
+input.form-control[type="color"] {
+    padding: 0.25rem 0.25rem;
+}
+input.form-control.form-control-sm[type="color"] {
+    padding: 0.125rem 0.125rem;
+}
+
+/* Custom-file focus styling: These can possibly be removed once BSV4.beta.3 is released */
+/* Although the focus handling/style will still be needed for Firefox keyboard-only users */
+/* Which will be addressed if PR https://github.com/twbs/bootstrap/pull/24138 is merged */
+
+/* Regular focus styling */
+.b-form-file.custom-file .custom-file-input.focus ~ .custom-file-control,
+.b-form-file.custom-file .custom-file-input:focus ~ .custom-file-control {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+/* Invalid focus styling */
+.b-form-file.custom-file .custom-file-input.is-invalid.focus ~ .custom-file-control,
+.b-form-file.custom-file .custom-file-input.is-invalid:focus ~ .custom-file-control,
+.was-validated .b-form-file.custom-file .custom-file-input:invalid.focus ~ .custom-file-control,
+.was-validated .b-form-file.custom-file .custom-file-input:invalid:focus ~ .custom-file-control {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    border-color: #dc3545;
+}
+/* valid focus styling */
+.b-form-file.custom-file .custom-file-input.is-valid.focus ~ .custom-file-control,
+.b-form-file.custom-file .custom-file-input.is-valid:focus ~ .custom-file-control,
+.was-validated .b-form-file.custom-file .custom-file-input:valid.focus ~ .custom-file-control,
+.was-validated .b-form-file.custom-file .custom-file-input:valid:focus ~ .custom-file-control {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    border-color: #28a745;
+}
+
+/* Interim fix (until BS V4.beta.3) for is-{state} feedback for plain form-file input */
+/* See issue https://github.com/twbs/bootstrap/issues/24831 */
+.form-control-file.is-invalid ~ .invalid-feedback,
+.form-control-file.is-valid ~ .valid-feedback,
+.was-validated .form-control-file:invalid ~ .invalid-feedback,
+.was-validated .form-control-file:valid ~ .valid-feedback {
+    display: block;
+}
+
+/* Drag/Drop and filenames/prompts custom styling */
+.b-form-file.custom-file .custom-file-control {
+    overflow: hidden;
+}
+.b-form-file.custom-file .custom-file-control {
+    overflow: hidden;
+}
+.b-form-file.custom-file .custom-file-control.dragging {
+    overflow: hidden;
+    filter: blur(3px);
+}
+.b-form-file.custom-file .custom-file-control[data-selected]::after {
+    content: attr(data-selected);
+}
+.b-form-file.custom-file .custom-file-control[data-choose]::before {
+    content: attr(data-choose);
+}
+.b-form-file.custom-file .drop-here {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 3px;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.b-form-file.custom-file .drop-here::before {
+    color: white;
+    content: attr(data-drop);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Add support for fixed layout table */
 table.b-table.b-table-fixed {
@@ -262,121 +420,4 @@ table.b-table.b-table-stacked-xl>tbody>tr>[data-label]::before {
 /* Details row styling */
 table.b-table>tbody>tr.b-table-details>td {
     border-top: none;
-}
-
-/*
-  This CSS can be removed once Bootstrap V4.beta.3 is released
-  https://github.com/twbs/bootstrap/pull/24510
-  Once BSV4.beta.3 is released, the script section can be moved into the modal.js file
-  V4.beta.3 will be changing modal margin to rem units
-*/
-.modal-dialog-centered {
-    display: flex;
-    align-items: center;
-    /* min-height: calc(100% - (1rem * 2)); */
-    min-height: calc(100% - (10px * 2));
-}
-.modal-dialog-centered .modal-content {
-    width: 100%;
-}
-@media (min-width: 576px) {
-.modal-dialog-centered {
-        /* min-height: calc(100% - (1.75rem * 2)); */
-        min-height: calc(100% - (30px * 2));
-}
-}
-
-/* Special styling for type=range and type=color input */
-input.form-control[type="range"],
-input.form-control[type="color"] {
-    height: 2.25rem;
-}
-input.form-control.form-control-sm[type="range"],
-input.form-control.form-control-sm[type="color"] {
-    height: 1.9375rem;
-}
-input.form-control.form-control-lg[type="range"],
-input.form-control.form-control-lg[type="color"] {
-    height: 3rem;
-}
-/* Less padding on type=color */
-input.form-control[type="color"] {
-    padding: 0.25rem 0.25rem;
-}
-input.form-control.form-control-sm[type="color"] {
-    padding: 0.125rem 0.125rem;
-}
-
-/* Custom-file focus styling: These can possibly be removed once BSV4.beta.3 is released */
-/* Although the focus handling/style will still be needed for Firefox keyboard-only users */
-/* Which will be addressed if PR https://github.com/twbs/bootstrap/pull/24138 is merged */
-
-/* Regular focus styling */
-.b-form-file.custom-file .custom-file-input.focus ~ .custom-file-control,
-.b-form-file.custom-file .custom-file-input:focus ~ .custom-file-control {
-    color: #495057;
-    background-color: #fff;
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    outline: none;
-}
-/* Invalid focus styling */
-.b-form-file.custom-file .custom-file-input.is-invalid.focus ~ .custom-file-control,
-.b-form-file.custom-file .custom-file-input.is-invalid:focus ~ .custom-file-control,
-.was-validated .b-form-file.custom-file .custom-file-input:invalid.focus ~ .custom-file-control,
-.was-validated .b-form-file.custom-file .custom-file-input:invalid:focus ~ .custom-file-control {
-    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-    border-color: #dc3545;
-}
-/* valid focus styling */
-.b-form-file.custom-file .custom-file-input.is-valid.focus ~ .custom-file-control,
-.b-form-file.custom-file .custom-file-input.is-valid:focus ~ .custom-file-control,
-.was-validated .b-form-file.custom-file .custom-file-input:valid.focus ~ .custom-file-control,
-.was-validated .b-form-file.custom-file .custom-file-input:valid:focus ~ .custom-file-control {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-    border-color: #28a745;
-}
-
-/* Interim fix (until BS V4.beta.3) for is-{state} feedback for plain form-file input */
-/* See issue https://github.com/twbs/bootstrap/issues/24831 */
-.form-control-file.is-invalid ~ .invalid-feedback,
-.form-control-file.is-valid ~ .valid-feedback,
-.was-validated .form-control-file:invalid ~ .invalid-feedback,
-.was-validated .form-control-file:valid ~ .valid-feedback {
-    display: block;
-}
-
-/* Drag/Drop and filenames/prompts custom styling */
-.b-form-file.custom-file .custom-file-control {
-    overflow: hidden;
-}
-.b-form-file.custom-file .custom-file-control {
-    overflow: hidden;
-}
-.b-form-file.custom-file .custom-file-control.dragging {
-    overflow: hidden;
-    filter: blur(3px);
-}
-.b-form-file.custom-file .custom-file-control[data-selected]::after {
-    content: attr(data-selected);
-}
-.b-form-file.custom-file .custom-file-control[data-choose]::before {
-    content: attr(data-choose);
-}
-.b-form-file.custom-file .drop-here {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, .5);
-    border-radius: 3px;
-    z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.b-form-file.custom-file .drop-here::before {
-    color: white;
-    content: attr(data-drop);
 }

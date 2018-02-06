@@ -2,3 +2,5 @@
 .idea/*
 tmp/logs/*
 !tmp/logs/.gitkeep
+public/uploaded/tasks/*
+!public/uploaded/tasks/.gitkeep
