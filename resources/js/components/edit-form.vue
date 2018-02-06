@@ -3,70 +3,109 @@
         <b-modal ref="editModal" title="Задача" hide-footer v-on:hide="hideModal">
             <div class="modal-body">
                 <b-form v-on:submit.prevent="saveFormData" v-on:reset="resetForm">
-                    <b-form-group label="Имя пользователя*:" label-for="user_name">
-                        <b-form-input id="user_name"
-                                      v-bind:class="{'is-invalid': formErrors.user_name}"
-                                      type="text"
-                                      v-model="formData.user_name"
-                                      required
-                                      placeholder="Введите имя пользователя"
-                                      v-on:input="formErrors.user_name = null"
-                        ></b-form-input>
-                        <div v-if="formErrors.user_name" class="error_message">
-                            {{ formErrors.user_name }}
-                        </div>
-                    </b-form-group>
-                    <b-form-group label="E-mail*:" label-for="email">
-                        <b-form-input id="email"
-                                      v-bind:class="{'is-invalid': formErrors.email}"
-                                      type="email"
-                                      v-model="formData.email"
-                                      required
-                                      placeholder="Введите E-mail"
-                                      v-on:input="formErrors.email = null"
-                        ></b-form-input>
-                        <div v-if="formErrors.email" class="error_message">
-                            {{ formErrors.email }}
-                        </div>
-                    </b-form-group>
-                    <b-form-group label="Задача*:" label-for="description">
-                        <b-form-textarea id="description"
-                                         v-bind:class="{'is-invalid': formErrors.description}"
-                                         v-model="formData.description"
-                                         placeholder="Опишите задачу"
-                                         :rows="3"
-                                         :max-rows="6"
-                                         v-on:input="formErrors.description = null"
-                        ></b-form-textarea>
-                        <div v-if="formErrors.description" class="error_message">
-                            {{ formErrors.description }}
-                        </div>
-                    </b-form-group>
-                    <b-form-group label="Изображение:" label-for="image">
-                        <b-form-file
-                                id="image"
-                                :state="formErrors.image ? 'invalid' : null"
-                                accept="image/jpeg, image/png, image/gif"
-                                v-model="formData.image"
-                                placeholder="Файл не указан"
-                                choose-label="Выберите файл"
-                                v-on:input="formErrors.image = null"
-                        ></b-form-file>
-                        <div v-if="formErrors.image" class="error_message">
-                            {{ formErrors.image }}
-                        </div>
-                    </b-form-group>
+                    <template v-if="!preview">
+                        <b-form-group label="Имя пользователя*:" label-for="user_name">
+                            <b-form-input id="user_name"
+                                          v-bind:class="{'is-invalid': formErrors.user_name}"
+                                          type="text"
+                                          v-model="formData.user_name"
+                                          required
+                                          placeholder="Введите имя пользователя"
+                                          v-on:input="formErrors.user_name = null"
+                            ></b-form-input>
+                            <div v-if="formErrors.user_name" class="error_message">
+                                {{ formErrors.user_name }}
+                            </div>
+                        </b-form-group>
+                        <b-form-group label="E-mail*:" label-for="email">
+                            <b-form-input id="email"
+                                          v-bind:class="{'is-invalid': formErrors.email}"
+                                          type="email"
+                                          v-model="formData.email"
+                                          required
+                                          placeholder="Введите E-mail"
+                                          v-on:input="formErrors.email = null"
+                            ></b-form-input>
+                            <div v-if="formErrors.email" class="error_message">
+                                {{ formErrors.email }}
+                            </div>
+                        </b-form-group>
+                        <b-form-group label="Задача*:" label-for="description">
+                            <b-form-textarea id="description"
+                                             v-bind:class="{'is-invalid': formErrors.description}"
+                                             v-model="formData.description"
+                                             placeholder="Опишите задачу"
+                                             :rows="3"
+                                             :max-rows="6"
+                                             v-on:input="formErrors.description = null"
+                            ></b-form-textarea>
+                            <div v-if="formErrors.description" class="error_message">
+                                {{ formErrors.description }}
+                            </div>
+                        </b-form-group>
+                        <b-form-group label="Изображение:" label-for="image">
+                            <b-form-file
+                                    id="image"
+                                    :state="formErrors.image ? 'invalid' : null"
+                                    accept="image/jpeg, image/png, image/gif"
+                                    v-model="formData.image"
+                                    placeholder="Файл не указан"
+                                    choose-label="Выберите файл"
+                                    v-on:input="formErrors.image = null"
+                            ></b-form-file>
+                            <div v-if="formErrors.image" class="error_message">
+                                {{ formErrors.image }}
+                            </div>
+                        </b-form-group>
 
-                    <b-form-group label="" label-for="">
-                        <b-form-checkbox
-                                v-if="editAvailable"
-                                v-bind:value="'2'"
-                                v-bind:unchecked-value="'1'"
-                                v-model="formData.status"
-                        >{{ formData.status === '2' ? 'Выполнено' : 'Не выполнено' }}</b-form-checkbox>
-                    </b-form-group>
+                        <b-form-group label="" label-for="">
+                            <b-form-checkbox
+                                    v-if="editAvailable"
+                                    v-bind:value="'2'"
+                                    v-bind:unchecked-value="'1'"
+                                    v-model="formData.status"
+                            >{{ formData.status === '2' ? 'Выполнено' : 'Не выполнено' }}</b-form-checkbox>
+                        </b-form-group>
 
-                    <b-button type="submit" variant="outline-success">Сохранить</b-button>
+                        <div class="text-right">
+                            <b-button variant="outline-warning" v-on:click="preview = true">Предварительный просмотр</b-button>
+                            <b-button type="submit" variant="outline-success">Сохранить</b-button>
+                        </div>
+                    </template>
+
+                    <template v-if="preview">
+                        <template v-if="previewSource">
+                            <b-form-group v-if="previewSource" label="Изображение:" label-for="user_name">
+                                <img style="width: 100%;" v-bind:src="previewSource" />
+                                <div v-if="formErrors.image" class="error_message">
+                                    {{ formErrors.image }}
+                                </div>
+                            </b-form-group>
+                        </template>
+                        <b-form-group label="Имя пользователя:" label-for="user_name">
+                            {{ formData.user_name }}
+                            <div v-if="formErrors.user_name" class="error_message">
+                                {{ formErrors.user_name }}
+                            </div>
+                        </b-form-group>
+                        <b-form-group label="E-mail:" label-for="email">
+                            {{ formData.email }}
+                            <div v-if="formErrors.email" class="error_message">
+                                {{ formErrors.email }}
+                            </div>
+                        </b-form-group>
+                        <b-form-group label="Задача:" label-for="description">
+                            {{ formData.description }}
+                            <div v-if="formErrors.description" class="error_message">
+                                {{ formErrors.description }}
+                            </div>
+                        </b-form-group>
+
+                        <div class="text-right">
+                            <b-button variant="outline-warning" v-on:click="preview = false">Назад</b-button>
+                            <b-button type="submit" variant="outline-success">Сохранить</b-button>
+                        </div>
+                    </template>
                 </b-form>
             </div>
         </b-modal>
@@ -107,6 +146,8 @@
         },
         data(){
             return {
+                preview: false,
+                previewSource: null,
                 formData: {
                     user_name: null,
                     email: null,
@@ -137,8 +178,23 @@
                     this.$refs.editModal.hide();
                 }
             },
+            preview: function (value) {
+                if (value === true) {
+                    this.initImagePreview();
+                }
+            },
         },
         methods: {
+            initImagePreview: function() {
+                var vueInstance = this;
+                if (this.formData.image) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        vueInstance.previewSource = e.target.result;
+                    }
+                    reader.readAsDataURL(this.formData.image);
+                }
+            },
             showEditModal: function() {
                 this.resetForm();
                 if (this.taskId){
@@ -236,6 +292,8 @@
                 });
             },
             resetForm: function() {
+                this.preview = false;
+                this.previewSource = null;
                 this.formData = {
                     user_name: null,
                     email: null,

@@ -3317,6 +3317,8 @@ exports.default = {
     },
     data: function data() {
         return {
+            preview: false,
+            previewSource: null,
             formData: {
                 user_name: null,
                 email: null,
@@ -3347,9 +3349,24 @@ exports.default = {
             } else {
                 this.$refs.editModal.hide();
             }
+        },
+        preview: function preview(value) {
+            if (value === true) {
+                this.initImagePreview();
+            }
         }
     },
     methods: {
+        initImagePreview: function initImagePreview() {
+            var vueInstance = this;
+            if (this.formData.image) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    vueInstance.previewSource = e.target.result;
+                };
+                reader.readAsDataURL(this.formData.image);
+            }
+        },
         showEditModal: function showEditModal() {
             this.resetForm();
             if (this.taskId) {
@@ -3445,6 +3462,8 @@ exports.default = {
             });
         },
         resetForm: function resetForm() {
+            this.preview = false;
+            this.previewSource = null;
             this.formData = {
                 user_name: null,
                 email: null,
@@ -3467,6 +3486,45 @@ exports.default = {
         }
     }
 }; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -22603,208 +22661,396 @@ var render = function() {
                   }
                 },
                 [
-                  _c(
-                    "b-form-group",
-                    {
-                      attrs: {
-                        label: "Имя пользователя*:",
-                        "label-for": "user_name"
-                      }
-                    },
-                    [
-                      _c("b-form-input", {
-                        class: { "is-invalid": _vm.formErrors.user_name },
-                        attrs: {
-                          id: "user_name",
-                          type: "text",
-                          required: "",
-                          placeholder: "Введите имя пользователя"
-                        },
-                        on: {
-                          input: function($event) {
-                            _vm.formErrors.user_name = null
-                          }
-                        },
-                        model: {
-                          value: _vm.formData.user_name,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "user_name", $$v)
+                  !_vm.preview
+                    ? [
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: {
+                              label: "Имя пользователя*:",
+                              "label-for": "user_name"
+                            }
                           },
-                          expression: "formData.user_name"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.formErrors.user_name
-                        ? _c("div", { staticClass: "error_message" }, [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.formErrors.user_name) +
-                                "\n                    "
-                            )
-                          ])
-                        : _vm._e()
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    { attrs: { label: "E-mail*:", "label-for": "email" } },
-                    [
-                      _c("b-form-input", {
-                        class: { "is-invalid": _vm.formErrors.email },
-                        attrs: {
-                          id: "email",
-                          type: "email",
-                          required: "",
-                          placeholder: "Введите E-mail"
-                        },
-                        on: {
-                          input: function($event) {
-                            _vm.formErrors.email = null
-                          }
-                        },
-                        model: {
-                          value: _vm.formData.email,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "email", $$v)
-                          },
-                          expression: "formData.email"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.formErrors.email
-                        ? _c("div", { staticClass: "error_message" }, [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.formErrors.email) +
-                                "\n                    "
-                            )
-                          ])
-                        : _vm._e()
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    {
-                      attrs: { label: "Задача*:", "label-for": "description" }
-                    },
-                    [
-                      _c("b-form-textarea", {
-                        class: { "is-invalid": _vm.formErrors.description },
-                        attrs: {
-                          id: "description",
-                          placeholder: "Опишите задачу",
-                          rows: 3,
-                          "max-rows": 6
-                        },
-                        on: {
-                          input: function($event) {
-                            _vm.formErrors.description = null
-                          }
-                        },
-                        model: {
-                          value: _vm.formData.description,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "description", $$v)
-                          },
-                          expression: "formData.description"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.formErrors.description
-                        ? _c("div", { staticClass: "error_message" }, [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.formErrors.description) +
-                                "\n                    "
-                            )
-                          ])
-                        : _vm._e()
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    { attrs: { label: "Изображение:", "label-for": "image" } },
-                    [
-                      _c("b-form-file", {
-                        attrs: {
-                          id: "image",
-                          state: _vm.formErrors.image ? "invalid" : null,
-                          accept: "image/jpeg, image/png, image/gif",
-                          placeholder: "Файл не указан",
-                          "choose-label": "Выберите файл"
-                        },
-                        on: {
-                          input: function($event) {
-                            _vm.formErrors.image = null
-                          }
-                        },
-                        model: {
-                          value: _vm.formData.image,
-                          callback: function($$v) {
-                            _vm.$set(_vm.formData, "image", $$v)
-                          },
-                          expression: "formData.image"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _vm.formErrors.image
-                        ? _c("div", { staticClass: "error_message" }, [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.formErrors.image) +
-                                "\n                    "
-                            )
-                          ])
-                        : _vm._e()
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-form-group",
-                    { attrs: { label: "", "label-for": "" } },
-                    [
-                      _vm.editAvailable
-                        ? _c(
-                            "b-form-checkbox",
-                            {
-                              attrs: { value: "2", "unchecked-value": "1" },
+                          [
+                            _c("b-form-input", {
+                              class: { "is-invalid": _vm.formErrors.user_name },
+                              attrs: {
+                                id: "user_name",
+                                type: "text",
+                                required: "",
+                                placeholder: "Введите имя пользователя"
+                              },
+                              on: {
+                                input: function($event) {
+                                  _vm.formErrors.user_name = null
+                                }
+                              },
                               model: {
-                                value: _vm.formData.status,
+                                value: _vm.formData.user_name,
                                 callback: function($$v) {
-                                  _vm.$set(_vm.formData, "status", $$v)
+                                  _vm.$set(_vm.formData, "user_name", $$v)
                                 },
-                                expression: "formData.status"
+                                expression: "formData.user_name"
                               }
-                            },
-                            [
-                              _vm._v(
-                                _vm._s(
-                                  _vm.formData.status === "2"
-                                    ? "Выполнено"
-                                    : "Не выполнено"
+                            }),
+                            _vm._v(" "),
+                            _vm.formErrors.user_name
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.user_name) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: { label: "E-mail*:", "label-for": "email" }
+                          },
+                          [
+                            _c("b-form-input", {
+                              class: { "is-invalid": _vm.formErrors.email },
+                              attrs: {
+                                id: "email",
+                                type: "email",
+                                required: "",
+                                placeholder: "Введите E-mail"
+                              },
+                              on: {
+                                input: function($event) {
+                                  _vm.formErrors.email = null
+                                }
+                              },
+                              model: {
+                                value: _vm.formData.email,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.formData, "email", $$v)
+                                },
+                                expression: "formData.email"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.formErrors.email
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.email) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: {
+                              label: "Задача*:",
+                              "label-for": "description"
+                            }
+                          },
+                          [
+                            _c("b-form-textarea", {
+                              class: {
+                                "is-invalid": _vm.formErrors.description
+                              },
+                              attrs: {
+                                id: "description",
+                                placeholder: "Опишите задачу",
+                                rows: 3,
+                                "max-rows": 6
+                              },
+                              on: {
+                                input: function($event) {
+                                  _vm.formErrors.description = null
+                                }
+                              },
+                              model: {
+                                value: _vm.formData.description,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.formData, "description", $$v)
+                                },
+                                expression: "formData.description"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.formErrors.description
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.description) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: {
+                              label: "Изображение:",
+                              "label-for": "image"
+                            }
+                          },
+                          [
+                            _c("b-form-file", {
+                              attrs: {
+                                id: "image",
+                                state: _vm.formErrors.image ? "invalid" : null,
+                                accept: "image/jpeg, image/png, image/gif",
+                                placeholder: "Файл не указан",
+                                "choose-label": "Выберите файл"
+                              },
+                              on: {
+                                input: function($event) {
+                                  _vm.formErrors.image = null
+                                }
+                              },
+                              model: {
+                                value: _vm.formData.image,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.formData, "image", $$v)
+                                },
+                                expression: "formData.image"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _vm.formErrors.image
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.image) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          { attrs: { label: "", "label-for": "" } },
+                          [
+                            _vm.editAvailable
+                              ? _c(
+                                  "b-form-checkbox",
+                                  {
+                                    attrs: {
+                                      value: "2",
+                                      "unchecked-value": "1"
+                                    },
+                                    model: {
+                                      value: _vm.formData.status,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.formData, "status", $$v)
+                                      },
+                                      expression: "formData.status"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        _vm.formData.status === "2"
+                                          ? "Выполнено"
+                                          : "Не выполнено"
+                                      )
+                                    )
+                                  ]
                                 )
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ],
-                    1
-                  ),
+                              : _vm._e()
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "text-right" },
+                          [
+                            _c(
+                              "b-button",
+                              {
+                                attrs: { variant: "outline-warning" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.preview = true
+                                  }
+                                }
+                              },
+                              [_vm._v("Предварительный просмотр")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-button",
+                              {
+                                attrs: {
+                                  type: "submit",
+                                  variant: "outline-success"
+                                }
+                              },
+                              [_vm._v("Сохранить")]
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    : _vm._e(),
                   _vm._v(" "),
-                  _c(
-                    "b-button",
-                    { attrs: { type: "submit", variant: "outline-success" } },
-                    [_vm._v("Сохранить")]
-                  )
+                  _vm.preview
+                    ? [
+                        _vm.previewSource
+                          ? [
+                              _vm.previewSource
+                                ? _c(
+                                    "b-form-group",
+                                    {
+                                      attrs: {
+                                        label: "Изображение:",
+                                        "label-for": "user_name"
+                                      }
+                                    },
+                                    [
+                                      _c("img", {
+                                        staticStyle: { width: "100%" },
+                                        attrs: { src: _vm.previewSource }
+                                      }),
+                                      _vm._v(" "),
+                                      _vm.formErrors.image
+                                        ? _c(
+                                            "div",
+                                            { staticClass: "error_message" },
+                                            [
+                                              _vm._v(
+                                                "\n                                " +
+                                                  _vm._s(_vm.formErrors.image) +
+                                                  "\n                            "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e()
+                                    ]
+                                  )
+                                : _vm._e()
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: {
+                              label: "Имя пользователя:",
+                              "label-for": "user_name"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.formData.user_name) +
+                                "\n                        "
+                            ),
+                            _vm.formErrors.user_name
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.user_name) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          { attrs: { label: "E-mail:", "label-for": "email" } },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.formData.email) +
+                                "\n                        "
+                            ),
+                            _vm.formErrors.email
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.email) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-form-group",
+                          {
+                            attrs: {
+                              label: "Задача:",
+                              "label-for": "description"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(_vm.formData.description) +
+                                "\n                        "
+                            ),
+                            _vm.formErrors.description
+                              ? _c("div", { staticClass: "error_message" }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(_vm.formErrors.description) +
+                                      "\n                        "
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "text-right" },
+                          [
+                            _c(
+                              "b-button",
+                              {
+                                attrs: { variant: "outline-warning" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.preview = false
+                                  }
+                                }
+                              },
+                              [_vm._v("Назад")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-button",
+                              {
+                                attrs: {
+                                  type: "submit",
+                                  variant: "outline-success"
+                                }
+                              },
+                              [_vm._v("Сохранить")]
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    : _vm._e()
                 ],
-                1
+                2
               )
             ],
             1

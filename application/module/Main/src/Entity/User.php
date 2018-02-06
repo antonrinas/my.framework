@@ -23,6 +23,10 @@ class User extends BaseEntity
     /**
      * @var string
      */
+    protected $role_id;
+    /**
+     * @var string
+     */
     protected $created;
     /**
      * @var string
@@ -88,6 +92,24 @@ class User extends BaseEntity
     public function setPassword($password)
     {
         $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoleId()
+    {
+        return $this->role_id;
+    }
+
+    /**
+     * @param string $role_id
+     * @return User
+     */
+    public function setRoleId($role_id)
+    {
+        $this->role_id = $role_id;
         return $this;
     }
 

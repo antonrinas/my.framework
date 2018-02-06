@@ -2,7 +2,6 @@
 
 namespace Api\Controller;
 
-use Framework\Mvc\Controller\BaseController;
 use Framework\Mvc\Model\ModelFactory;
 use Main\Exception\ControllerException;
 use Main\Model\BaseModelInterface;
@@ -15,14 +14,9 @@ use Api\Validator\TaskValidator;
 use Main\Service\FileUploaderService;
 use Main\Service\ImageTranformationService;
 
-class TaskController extends BaseController
+class TaskController extends BaseApiController
 {
     const ENTITIES_PER_PAGE = 3;
-
-    /**
-     * @var string
-     */
-    protected $contentType = 'application/json';
 
     /**
      * @var BaseModelInterface
@@ -121,6 +115,7 @@ class TaskController extends BaseController
     public function edit($taskId)
     {
         try {
+            $this->authorizeAdmin();
             $task = $this->taskModel->find((int) $taskId, ['*'], true);
             if (!$task) {
                 $exception = new ControllerException(sprintf("Task with ID %s was not found",
@@ -148,6 +143,7 @@ class TaskController extends BaseController
     public function update($taskId)
     {
         try {
+            $this->authorizeAdmin();
             $task = $this->taskModel->find((int) $taskId, ['*']);
             if (!$task) {
                 $exception = new ControllerException(sprintf("Task with ID %s was not found",
@@ -190,7 +186,7 @@ class TaskController extends BaseController
             $task->exchangeArray($postParams)
                 ->setImageId($image_id)
                 ->setUpdated(date('Y-m-d H:i:s'));
-            $id = $this->taskModel->save($task);
+            $this->taskModel->save($task);
 
             return $this->getView()->setParams(['status' => Constants::OK_STATUS,])->render();
         } catch(\Exception $e) {
@@ -201,19 +197,6 @@ class TaskController extends BaseController
                 'message_for_developer' => $e->getMessage(),
             ])->render();
         }
-    }
-
-    public function destroy($taskId)
-    {
-
-    }
-
-    private function getWarningResponse($messages)
-    {
-        return $this->getView()->setParams([
-            'status' => Constants::WARNING_STATUS,
-            'messages' => $messages,
-        ])->render();
     }
 
     private function uploadImage()
@@ -249,12 +232,5 @@ class TaskController extends BaseController
             ->setThumbMarker('_thumb_1')
             ->resize();
 
-    }
-
-    private function unlinkFile($filePath)
-    {
-        if (is_file($filePath)){
-            unlink($filePath);
-        }
     }
 }

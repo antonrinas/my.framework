@@ -2,8 +2,6 @@
 
 namespace Api\Controller;
 
-use Framework\Mvc\Controller\BaseController;
-use Main\Exception\ControllerException;
 use Framework\Mvc\Model\ModelFactory;
 use Main\Model\BaseModelInterface;
 use Main\Model\User as UserModel;
@@ -11,13 +9,8 @@ use Main\Entity\User as UserEntity;
 use Api\Validator\LoginValidator;
 use Api\Core\Constants;
 
-class LoginController extends BaseController
+class LoginController extends BaseApiController
 {
-    /**
-     * @var string
-     */
-    protected $contentType = 'application/json';
-
     /**
      * @var BaseModelInterface
      */
@@ -59,7 +52,7 @@ class LoginController extends BaseController
         }
     }
 
-    private function getWarningResponse($messages, $generalMessage = null)
+    protected function getWarningResponse($messages, $generalMessage = null)
     {
         return $this->getView()->setParams([
             'status' => Constants::WARNING_STATUS,

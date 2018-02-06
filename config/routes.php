@@ -74,17 +74,6 @@ return [
                 ':id' => '(\d+)',
             ],
         ],
-        [
-            'url' => '/api/tasks/:id',
-            'request_method' => 'DELETE',
-            'module' => 'Api',
-            'namespace' => 'Controller',
-            'controller' => 'Task',
-            'method' => 'destroy',
-            'params' => [
-                ':id' => '(\d+)',
-            ],
-        ],
         // Login
         [
             'url' => '/api/login',
