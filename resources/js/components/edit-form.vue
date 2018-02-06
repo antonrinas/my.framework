@@ -56,6 +56,16 @@
                             {{ formErrors.image }}
                         </div>
                     </b-form-group>
+
+                    <b-form-group label="" label-for="">
+                        <b-form-checkbox
+                                v-if="editAvailable"
+                                v-bind:value="'2'"
+                                v-bind:unchecked-value="'1'"
+                                v-model="formData.status"
+                        >{{ formData.status === '2' ? 'Выполнено' : 'Не выполнено' }}</b-form-checkbox>
+                    </b-form-group>
+
                     <b-button type="submit" variant="outline-success">Сохранить</b-button>
                 </b-form>
             </div>
@@ -79,10 +89,11 @@
     import bFormInput from 'bootstrap-vue/es/components/form-input/form-input';
     import bFormTextarea from 'bootstrap-vue/es/components/form-textarea/form-textarea';
     import bFormFile from 'bootstrap-vue/es/components/form-file/form-file';
+    import bFormCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
     import messanger from './messanger.vue';
 
     export default {
-        props: ['showForm'],
+        props: ['showForm', 'taskId', 'editAvailable'],
         components: {
             'b-modal': bModal,
             'b-button': bButton,
@@ -91,6 +102,7 @@
             'b-form-input': bFormInput,
             'b-form-textarea': bFormTextarea,
             'b-form-file': bFormFile,
+            'b-form-checkbox': bFormCheckbox,
             'messanger': messanger,
         },
         data(){
@@ -100,12 +112,14 @@
                     email: null,
                     description: null,
                     image: null,
+                    status: '1',
                 },
                 formErrors: {
                     user_name: null,
                     email: null,
                     description: null,
                     image: null,
+                    status: '1',
                 },
                 uploadPercentCompleted: null,
                 showMessage: false,
@@ -127,19 +141,33 @@
         methods: {
             showEditModal: function() {
                 this.resetForm();
-                this.$refs.editModal.show();
+                if (this.taskId){
+                    this.retrieveTask();
+                } else {
+                    this.$refs.editModal.show();
+                }
             },
             hideModal: function() {
                 this.$emit('hide', true);
             },
             saveFormData: function() {
-                var vueInstance = this;
                 var data = new FormData();
                 data.append('user_name', this.formData.user_name);
                 data.append('email', this.formData.email);
                 data.append('description', this.formData.description);
                 data.append('image', this.formData.image);
+                data.append('status', this.formData.status);
 
+                if (this.taskId){
+                    this.updateTask(data);
+                } else {
+                    this.addTask(data);
+                }
+
+
+            },
+            addTask: function (data) {
+                var vueInstance = this;
                 axios.post('/api/tasks', data, {
                     onUploadProgress: function(progressEvent) {
                         vueInstance.uploadPercentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
@@ -160,10 +188,52 @@
                         vueInstance.makeMessage('Ошибка', response.data.message);
                         console.log('Возникла ошибка ' + response.status + ': ' + response.data.message_for_developer);
                     }
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            updateTask: function(data) {
+                var vueInstance = this;
+                axios.post('/api/tasks/' + this.taskId, data, {
+                    onUploadProgress: function(progressEvent) {
+                        vueInstance.uploadPercentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+                    }
+                }).then(function (response) {
+                    if (response.status === 200){
+                        if (response.data.status === 'warning'){
+                            for (var propertyName in vueInstance.formErrors){
+                                if (response.data.messages.hasOwnProperty(propertyName)) {
+                                    vueInstance.formErrors[propertyName] = response.data.messages[propertyName];
+                                }
+                            }
+                        } else {
+                            vueInstance.hideModal();
+                            vueInstance.$emit('updated', true);
+                        }
+                    } else {
+                        vueInstance.makeMessage('Ошибка', response.data.message);
+                        console.log('Возникла ошибка ' + response.status + ': ' + response.data.message_for_developer);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            retrieveTask: function() {
+                var vueInstance = this;
+                axios.get('/api/tasks/' + vueInstance.taskId + '/edit' , {}).then(function (response) {
+                    if (response.status === 200){
+                        vueInstance.formData.user_name = response.data.data.user_name;
+                        vueInstance.formData.email = response.data.data.email;
+                        vueInstance.formData.description = response.data.data.description;
+                        vueInstance.formData.status = response.data.data.status;
+                        vueInstance.$refs.editModal.show();
+                    } else {
+                        vueInstance.makeMessage('Ошибка', response.data.message);
+                        console.log('Возникла ошибка ' + response.status + ': ' + response.data.message_for_developer);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
             },
             resetForm: function() {
                 this.formData = {
@@ -171,12 +241,14 @@
                     email: null,
                     description: null,
                     image: null,
+                    status: '1',
                 };
                 this.formErrors = {
                     user_name: null,
                     email: null,
                     description: null,
                     image: null,
+                    status: '1',
                 };
             },
             makeMessage: function(title, message) {

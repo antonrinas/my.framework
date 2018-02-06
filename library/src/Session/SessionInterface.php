@@ -34,4 +34,9 @@ interface SessionInterface
      * @return mixed
      */
     public function getUserData();
+
+    /**
+     * @return void
+     */
+    public function clear();
 }

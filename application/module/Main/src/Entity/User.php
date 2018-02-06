@@ -23,11 +23,11 @@ class User extends BaseEntity
     /**
      * @var string
      */
-    protected $created_at;
+    protected $created;
     /**
      * @var string
      */
-    protected $updated_at;
+    protected $updated;
 
     /**
      * @return string
@@ -94,36 +94,36 @@ class User extends BaseEntity
     /**
      * @return string
      */
-    public function getCreatedAt()
+    public function getCreated()
     {
-        return $this->created_at;
+        return $this->created;
     }
 
     /**
-     * @param string $created_at
+     * @param string $created
      * @return User
      */
-    public function setCreatedAt($created_at)
+    public function setCreated($created)
     {
-        $this->created_at = $created_at;
+        $this->created = $created;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getUpdatedAt()
+    public function getUpdated()
     {
-        return $this->updated_at;
+        return $this->updated;
     }
 
     /**
-     * @param string $updated_at
+     * @param string $updated
      * @return User
      */
-    public function setUpdatedAt($updated_at)
+    public function setUpdated($updated)
     {
-        $this->updated_at = $updated_at;
+        $this->updated = $updated;
         return $this;
     }
 }

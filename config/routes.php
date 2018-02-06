@@ -35,6 +35,7 @@ return [
         /**
          * API
          */
+        // Tasks
         [
             'url' => '/api/tasks',
             'request_method' => 'GET',
@@ -64,7 +65,7 @@ return [
         ],
         [
             'url' => '/api/tasks/:id',
-            'request_method' => 'PUT',
+            'request_method' => 'POST',
             'module' => 'Api',
             'namespace' => 'Controller',
             'controller' => 'Task',
@@ -83,6 +84,24 @@ return [
             'params' => [
                 ':id' => '(\d+)',
             ],
+        ],
+        // Login
+        [
+            'url' => '/api/login',
+            'request_method' => 'POST',
+            'module' => 'Api',
+            'namespace' => 'Controller',
+            'controller' => 'Login',
+            'method' => 'store',
+        ],
+        // Logout
+        [
+            'url' => '/api/logout',
+            'request_method' => 'POST',
+            'module' => 'Api',
+            'namespace' => 'Controller',
+            'controller' => 'Logout',
+            'method' => 'store',
         ],
     ],
 ];

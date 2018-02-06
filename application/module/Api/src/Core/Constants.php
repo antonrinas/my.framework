@@ -10,4 +10,5 @@ class Constants
     const ERROR_STATUS = 'error';
 
     const GENERAL_ERROR_MESSAGE = 'Во время выполнения операции возникла ошибка';
+    const GENERAL_LOGIN_ERROR = 'Неверное имя пользователя или пароль';
 }

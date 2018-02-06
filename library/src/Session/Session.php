@@ -69,4 +69,12 @@ class Session implements SessionInterface
         }
         return $_SESSION['application_session']['authenticated_user'];
     }
+
+    /**
+     * @return void
+     */
+    public function clear()
+    {
+        $_SESSION['application_session'] = [];
+    }
 }

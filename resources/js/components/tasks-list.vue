@@ -1,16 +1,16 @@
 <template>
     <div id="tasks_list">
-        <h2>Добро пожаловать</h2>
         <b-table
             :no-local-sorting="true"
             striped
-            fixed
             hover
+            responsive
             :items="items"
             :fields="fields"
             :sort-by.sync="filters.sortBy"
             :sort-desc.sync="filters.sortDesc"
             v-on:sort-changed="changeSorting"
+            empty-text="Записи отсутствуют"
         >
             <template slot="user_name" slot-scope="data">
                 {{ data.item.user_name }}
@@ -23,7 +23,9 @@
             </template>
             <template slot="path_thumb_1" slot-scope="data">
                 <template v-if="data.item.path_thumb_1">
-                    <img v-bind:src="data.item.path_thumb_1" alt="Изображение к задаче" style="width: 100%;" />
+                    <a v-bind:href="data.item.path" target="_blank">
+                        <img v-bind:src="data.item.path_thumb_1" alt="Изображение к задаче" style="width: 100%;" />
+                    </a>
                 </template>
                 <template v-else>
                     отсутствует
@@ -31,23 +33,35 @@
             </template>
             <template slot="status" slot-scope="data">
                 <template v-if="data.item.status === '2'">
-                    выполнено
+                    <b-form-checkbox
+                        v-bind:disabled="true"
+                        v-bind:checked="true"
+                    >выполнено</b-form-checkbox>
                 </template>
                 <template v-else>
-                    не выполнено
+                    <b-form-checkbox
+                        v-bind:disabled="true"
+                        v-bind:checked="false"
+                    >не выполнено</b-form-checkbox>
+
                 </template>
             </template>
+
+            <template v-if="editAvailable" slot="actions" slot-scope="data">
+                <b-button v-on:click="editTask(data.item.id)" variant="warning">Редактировать</b-button>
+            </template>
+
         </b-table>
         <p class="text-center" v-show="items.length === 0">Записи отсутствуют</p>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-sm-4">
                 <b-button-group size="sm">
-                    <b-button v-on:click="showForm = true" variant="success">Добавить</b-button>
+                    <b-button v-on:click="addTask" variant="success">Добавить</b-button>
                     <b-button v-on:click="retrieveTasks" variant="primary">Обновить</b-button>
                 </b-button-group>
             </div>
-            <div class="col-md-8">
+            <div class="col-sm-8">
                 <b-pagination
                     align="right"
                     :total-rows="totalRows"
@@ -60,8 +74,11 @@
 
         <edit-form
                 v-bind:show-form="showForm"
+                v-bind:task-id="taskId"
+                v-bind:edit-available="editAvailable"
                 v-on:hide="showForm = false"
                 v-on:added="retrieveTasks"
+                v-on:updated="retrieveTasks"
         ></edit-form>
 
         <messanger
@@ -80,13 +97,16 @@
     import bButton from 'bootstrap-vue/es/components/button/button';
     import bButtonGroup from 'bootstrap-vue/es/components/button-group/button-group';
     import bPagination from 'bootstrap-vue/es/components/pagination/pagination';
+    import bFormCheckbox from 'bootstrap-vue/es/components/form-checkbox/form-checkbox';
 
     export default {
+        props: ['editAvailable'],
         components: {
             'b-table': bTable,
             'b-button': bButton,
             'b-button-group': bButtonGroup,
             'b-pagination': bPagination,
+            'b-form-checkbox': bFormCheckbox,
             'edit-form': editForm,
             'messanger': messanger,
         },
@@ -127,19 +147,36 @@
                     {
                         key: 'status',
                         sortable: true,
-                        label: 'Статус выполненения',
+                        label: 'Статус',
+                    },
+                    {
+                        key: 'actions',
+                        sortable: false,
+                        label: 'Действия',
                     },
                 ],
                 items: [],
                 showForm: false,
                 showMessage: false,
+                taskId: null,
             }
         },
         mounted: function () {
+            if (!this.editAvailable) {
+                this.fields.pop();
+            }
             this.retrieveTasks();
         },
         methods: {
-            changeSorting: function(ctx){
+            addTask: function () {
+                this.taskId = null;
+                this.showForm = true;
+            },
+            editTask: function(taskId) {
+                this.taskId = taskId;
+                this.showForm = true;
+            },
+            changeSorting: function(ctx) {
                 this.filters.sortBy = ctx.sortBy;
                 this.filters.sortDesc = ctx.sortDesc;
                 this.retrieveTasks();
@@ -175,7 +212,5 @@
 </script>
 
 <style scoped>
-    h2 {
-        color: green;
-    }
+
 </style>

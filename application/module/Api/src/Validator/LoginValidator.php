@@ -5,7 +5,7 @@ namespace Api\Validator;
 use Framework\Validator\Validator;
 use Framework\Validator\ValidatorInterface;
 
-class TaskValidator
+class LoginValidator
 {
     /**
      * @var ValidatorInterface
@@ -16,28 +16,18 @@ class TaskValidator
      * @var array
      */
     private $filters = [
-        'user_name' => array('trimFilter', 'stripSlashesFilter'),
-        'email' => array('trimFilter', 'stripSlashesFilter'),
-        'description' => array('trimFilter', 'stripSlashesFilter'),
-        'status' => array('trimFilter'),
+        'email' => array('trimFilter'),
+        'password' => array('trimFilter'),
     ];
 
     private $validators = [
-        'user_name' => array(
-            array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 255, 'message' => 'Длина должна быть от 0 до 255 символов'),
-        ),
         'email' => array(
             array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 255, 'message' => 'Длина должна быть от 0 до 255 символов'),
-            array('name' => 'emailAddressValidator', 'message' => 'Неверный формат email адреса'),
+            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 100, 'message' => 'Длина должна быть от 0 до 100 символов'),
         ),
-        'description' => array(
+        'password' => array(
             array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 2000, 'message' => 'Длина должна быть от 0 до 2000 символов'),
-        ),
-        'status' => array(
-            array('name' => 'regexValidator', 'message' => 'Неверный формат данных', 'regex' => '/^(1|2)*$/'),
+            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 100, 'message' => 'Длина должна быть от 0 до 100 символов'),
         ),
     ];
 

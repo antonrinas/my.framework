@@ -9,6 +9,8 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        return $this->getView()->render();
+        return $this->getView()->setParams([
+            'authorized' => $this->getSession()->getUserData() ? true : false,
+        ])->render();
     }
 }

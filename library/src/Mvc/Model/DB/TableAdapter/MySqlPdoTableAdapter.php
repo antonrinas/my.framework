@@ -47,7 +47,7 @@ class MySqlPdoTableAdapter implements TableAdapterInterface
         $stmt->execute($params);
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
         if ($asArray){
-            return $stmt->fetchAll();
+            return $stmt->fetch();
         }
 
         return $stmt->fetchObject($this->entityClassName);

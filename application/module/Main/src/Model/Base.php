@@ -68,7 +68,7 @@ class Base implements ModelInterface, BaseModelInterface
         $queryBuilder->reset();
         $result = $this->getTableAdapter()->fetch($queryBuilderResult['query'], $queryBuilderResult['params'], true);
 
-        return $result[0]['counter'];
+        return $result['counter'];
     }
 
     /**
@@ -77,7 +77,7 @@ class Base implements ModelInterface, BaseModelInterface
      *
      * @return EntityInterface | null
      */
-    public function find($id, $columns = ['*'])
+    public function find($id, $columns = ['*'], $asArray = false)
     {
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder->select($this->tableName, $columns)
@@ -85,7 +85,7 @@ class Base implements ModelInterface, BaseModelInterface
         $queryBuilderResult = $queryBuilder->compileQuery();
         $queryBuilder->reset();
 
-        return $this->getTableAdapter()->fetch($queryBuilderResult['query'], $queryBuilderResult['params']);
+        return $this->getTableAdapter()->fetch($queryBuilderResult['query'], $queryBuilderResult['params'], $asArray);
     }
 
     /**

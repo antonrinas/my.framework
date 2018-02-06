@@ -17,8 +17,11 @@ use Main\Service\ImageTranformationService;
 
 class TaskController extends BaseController
 {
-    const ENTITIES_PER_PAGE = 2;
+    const ENTITIES_PER_PAGE = 3;
 
+    /**
+     * @var string
+     */
     protected $contentType = 'application/json';
 
     /**
@@ -115,6 +118,96 @@ class TaskController extends BaseController
         }
     }
 
+    public function edit($taskId)
+    {
+        try {
+            $task = $this->taskModel->find((int) $taskId, ['*'], true);
+            if (!$task) {
+                $exception = new ControllerException(sprintf("Task with ID %s was not found",
+                    $taskId
+                ));
+                $exception->setCode(404);
+                throw $exception;
+            }
+            return $this->getView()->setParams(
+                [
+                    'status' => Constants::OK_STATUS,
+                    'data' => $task,
+                ]
+            )->render();
+        } catch(\Exception $e) {
+            $this->getResponse()->setStatusCode($e->getCode());
+            return $this->getView()->setParams([
+                'status' => Constants::ERROR_STATUS,
+                'message' => Constants::GENERAL_ERROR_MESSAGE,
+                'message_for_developer' => $e->getMessage(),
+            ])->render();
+        }
+    }
+
+    public function update($taskId)
+    {
+        try {
+            $task = $this->taskModel->find((int) $taskId, ['*']);
+            if (!$task) {
+                $exception = new ControllerException(sprintf("Task with ID %s was not found",
+                    $taskId
+                ));
+                $exception->setCode(404);
+                throw $exception;
+            }
+            $postParams = $this->getRequest()->getPostParams();
+            $validator = new TaskValidator($postParams);
+            if (!$validator->isValid()){
+                return $this->getView()->setParams([
+                    'status' => Constants::WARNING_STATUS,
+                    'messages' => $validator->getErrors(),
+                ])->render();
+            }
+
+            $image_id = $task->getImageId();
+            if ($this->getRequest()->getFiles()) {
+                $uploadResult = $this->uploadImage();
+                if ($uploadResult['status'] === 'error'){
+                    return $this->getWarningResponse(['image' => $uploadResult['message']]);
+                }
+                $resizeResult = $this->makeThumb($uploadResult['file_path']);
+                if ($resizeResult['status'] === 'error'){
+                    $this->unlinkFile(PUBLIC_PATH . $uploadResult['file_path']);
+                    return $this->getWarningResponse(['image' => $resizeResult['message']]);
+                }
+                $image = new ImageEntity();
+                $image->setPath($uploadResult['file_path'])
+                    ->setPathThumb1($resizeResult['file_path'])
+                    ->setCreated(date('Y-m-d H:i:s'))
+                    ->setUpdated(date('Y-m-d H:i:s'));
+                $image_id = $this->imageModel->save($image);
+                if ($task->getImageId()) {
+                    $this->imageModel->delete($task->getImageId());
+                }
+            }
+
+            $task->exchangeArray($postParams)
+                ->setImageId($image_id)
+                ->setUpdated(date('Y-m-d H:i:s'));
+            $id = $this->taskModel->save($task);
+
+            return $this->getView()->setParams(['status' => Constants::OK_STATUS,])->render();
+        } catch(\Exception $e) {
+            $this->getResponse()->setStatusCode($e->getCode());
+            return $this->getView()->setParams([
+                'status' => Constants::ERROR_STATUS,
+                'message' => Constants::GENERAL_ERROR_MESSAGE,
+                'message_for_developer' => $e->getMessage(),
+            ])->render();
+        }
+    }
+
+    public function destroy($taskId)
+    {
+
+    }
+
     private function getWarningResponse($messages)
     {
         return $this->getView()->setParams([
@@ -148,13 +241,13 @@ class TaskController extends BaseController
     {
         $imageTranformationService = new ImageTranformationService();
         return $imageTranformationService->setImageLibrary('gd2')
-                                         ->setSourceImage($photoPath)
-                                         ->setCreateThumb(true)
-                                         ->setMaintainRatio(true)
-                                         ->setWidth(320)
-                                         ->setHeight(240)
-                                         ->setThumbMarker('_thumb_1')
-                                         ->resize();
+            ->setSourceImage($photoPath)
+            ->setCreateThumb(true)
+            ->setMaintainRatio(true)
+            ->setWidth(320)
+            ->setHeight(240)
+            ->setThumbMarker('_thumb_1')
+            ->resize();
 
     }
 
@@ -163,42 +256,5 @@ class TaskController extends BaseController
         if (is_file($filePath)){
             unlink($filePath);
         }
-    }
-
-    public function edit($taskId)
-    {
-        try {
-            $task = $this->taskModel->find((int) $taskId);
-            if (!$task) {
-                $exception = new ControllerException(sprintf("Task with ID %s was not found",
-                    $taskId
-                ));
-                $exception->setCode(404);
-                throw $exception;
-            }
-            return $this->getView()->setParams(
-                [
-                    'status' => Constants::OK_STATUS,
-                    'data' => $task,
-                ]
-            )->render();
-        } catch(\Exception $e) {
-            $this->getResponse()->setStatusCode($e->getCode());
-            return $this->getView()->setParams([
-                'status' => Constants::ERROR_STATUS,
-                'message' => Constants::GENERAL_ERROR_MESSAGE,
-                'message_for_developer' => $e->getMessage(),
-            ])->render();
-        }
-    }
-
-    public function update($taskId)
-    {
-
-    }
-
-    public function destroy($taskId)
-    {
-
     }
 }
