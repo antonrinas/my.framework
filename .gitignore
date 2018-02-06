@@ -1,6 +1,8 @@
 /node_modules
 .idea/*
 tmp/logs/*
+dayside/*
+!dayside/.htaccess
 !tmp/logs/.gitkeep
 public/uploaded/tasks/*
 !public/uploaded/tasks/.gitkeep
