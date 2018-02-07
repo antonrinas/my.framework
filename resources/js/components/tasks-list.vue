@@ -4,7 +4,6 @@
             :no-local-sorting="true"
             striped
             hover
-            responsive
             :items="items"
             :fields="fields"
             :sort-by.sync="filters.sortBy"
