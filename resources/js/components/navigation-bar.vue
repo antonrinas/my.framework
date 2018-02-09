@@ -8,11 +8,6 @@
                 <b-navbar-nav class="ml-auto">
                     <template v-if="authenticated === 0">
                         <b-nav-item href="#" v-on:click="showLoginForm = true">Войти</b-nav-item>
-                        <login-form
-                                v-bind:show-login-form="showLoginForm"
-                                v-on:hide="showLoginForm = false"
-                                v-on:success-login="successHandler"
-                        ></login-form>
                     </template>
                     <template v-else>
                         <b-nav-item href="#" disabled>Здравствуйте, Администратор!</b-nav-item>
@@ -20,6 +15,12 @@
                     </template>
                 </b-navbar-nav>
             </b-collapse>
+
+            <login-form
+                    v-bind:show-login-form="showLoginForm"
+                    v-on:hide="showLoginForm = false"
+                    v-on:success-login="successHandler"
+            ></login-form>
         </b-navbar>
 
     </div>
