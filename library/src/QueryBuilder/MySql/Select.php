@@ -21,6 +21,13 @@ class Select implements QueryPartInterface
      */
     private $distinct = '';
 
+    /**
+     * Select constructor.
+     *
+     * @param string $tableName
+     * @param array $columns
+     * @param bool $distinct
+     */
     public function __construct($tableName, $columns = [], $distinct = false)
     {
         $this->tableName = $tableName;
@@ -38,6 +45,9 @@ class Select implements QueryPartInterface
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $columns = '*';

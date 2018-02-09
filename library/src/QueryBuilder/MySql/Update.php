@@ -26,6 +26,13 @@ class Update implements QueryPartInterface
      */
     private $params = [];
 
+    /**
+     * Update constructor.
+     *
+     * @param string $tableName
+     * @param array $values
+     * @param mixed $objectIndex
+     */
     public function __construct($tableName, $values, $objectIndex)
     {
         $this->tableName = $tableName;
@@ -48,6 +55,9 @@ class Update implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $query  = "UPDATE $this->tableName SET " . implode(", ", $this->sets) . "\n";

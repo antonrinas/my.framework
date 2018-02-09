@@ -8,6 +8,11 @@ class Task extends Base
 {
     protected $tableName = 'tasks';
 
+    /**
+     * @param array $filters
+     *
+     * @return mixed
+     */
     public function fetchAllByFilters($filters)
     {
         $queryBuilder = $this->getQueryBuilder();

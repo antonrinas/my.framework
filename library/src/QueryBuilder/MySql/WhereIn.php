@@ -21,6 +21,13 @@ class WhereIn implements QueryPartInterface
      */
     private $params = [];
 
+    /**
+     * WhereIn constructor.
+     *
+     * @param string $columnName
+     * @param array $values
+     * @param mixed $objectIndex
+     */
     public function __construct($columnName, $values, $objectIndex)
     {
         $this->columnName = $columnName;
@@ -41,6 +48,9 @@ class WhereIn implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $query  = "$this->columnName IN (" . implode(', ', array_keys($this->params)) . ")\n";

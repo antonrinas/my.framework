@@ -24,6 +24,9 @@ class WhereIsNull implements QueryPartInterface
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $query  = "$this->columnName IS NULL\n";

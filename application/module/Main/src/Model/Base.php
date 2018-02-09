@@ -10,8 +10,19 @@ use Main\Exception\ModelException;
 
 class Base implements ModelInterface, BaseModelInterface
 {
+    /**
+     * @var string
+     */
     protected $tableName;
+
+    /**
+     * @var string
+     */
     protected $primaryKey = 'id';
+
+    /**
+     * @var bool
+     */
     protected $asArray = false;
 
     /**

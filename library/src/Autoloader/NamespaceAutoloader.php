@@ -14,6 +14,12 @@ class NamespaceAutoloader
 
     }
 
+    /**
+     * @param string $namespace
+     * @param string $rootDir
+     *
+     * @return bool
+     */
     public function addNamespace($namespace, $rootDir)
     {
         if (is_dir($rootDir)) {
@@ -29,6 +35,11 @@ class NamespaceAutoloader
         spl_autoload_register([$this, 'autoload']);
     }
 
+    /**
+     * @param string $class
+     *
+     * @return bool
+     */
     protected function autoload($class)
     {
         $pathParts = explode('\\', $class);

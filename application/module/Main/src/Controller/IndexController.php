@@ -7,6 +7,9 @@ use Framework\Mvc\Model\ModelFactory;
 
 class IndexController extends BaseController
 {
+    /**
+     * @return string
+     */
     public function index()
     {
         return $this->getView()->setParams([

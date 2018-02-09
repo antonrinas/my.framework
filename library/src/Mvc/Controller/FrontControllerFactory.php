@@ -20,6 +20,9 @@ class FrontControllerFactory implements FactoryInterface
         $this->config = $config['routes'];
     }
 
+    /**
+     * @return FrontControllerInterface
+     */
     public function getInstance()
     {
         $router = new Router($this->config);

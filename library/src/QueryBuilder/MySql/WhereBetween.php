@@ -21,6 +21,14 @@ class WhereBetween implements QueryPartInterface
      */
     private $params = [];
 
+    /**
+     * WhereBetween constructor.
+     *
+     * @param string $columnName
+     * @param string|int $leftValue
+     * @param string|int $rightValue
+     * @param mixed $objectIndex
+     */
     public function __construct($columnName, $leftValue, $rightValue, $objectIndex)
     {
         $this->columnName = $columnName;
@@ -41,6 +49,9 @@ class WhereBetween implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $params = array_keys($this->params);

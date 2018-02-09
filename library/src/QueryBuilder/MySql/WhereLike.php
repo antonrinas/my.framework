@@ -21,6 +21,14 @@ class WhereLike implements QueryPartInterface
      */
     private $params = [];
 
+    /**
+     * WhereLike constructor.
+     *
+     * @param string $columnName
+     * @param string|int $value
+     * @param string $percent - 'left' or 'right' or none for both
+     * @param $objectIndex
+     */
     public function __construct($columnName, $value, $percent, $objectIndex)
     {
         $this->columnName = $columnName;
@@ -46,6 +54,9 @@ class WhereLike implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         reset($this->params);

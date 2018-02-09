@@ -20,6 +20,11 @@ class ApplicationFactory implements FactoryInterface
         $this->initEnviroment();
     }
 
+    /**
+     * @return ApplicationInterface
+     *
+     * @throws ApplicationException
+     */
     public function getInstance()
     {
         $frontControllerFactory = new FrontControllerFactory($this->config);

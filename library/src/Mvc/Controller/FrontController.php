@@ -69,6 +69,8 @@ class FrontController implements FrontControllerInterface
 
     /**
      * @return ResponseInterface
+     *
+     * @throws Dispatcher\DispatcherException
      */
     private function dispatch()
     {

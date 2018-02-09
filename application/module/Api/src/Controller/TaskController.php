@@ -34,6 +34,11 @@ class TaskController extends BaseApiController
         $this->imageModel = ModelFactory::init(ImageModel::class, ImageEntity::class)->retrieveModel();
     }
 
+    /**
+     * Retrieve tasks list
+     *
+     * @return string
+     */
     public function index()
     {
         try {
@@ -63,6 +68,11 @@ class TaskController extends BaseApiController
         }
     }
 
+    /**
+     * Add task
+     *
+     * @return string
+     */
     public function store()
     {
         try {
@@ -112,6 +122,13 @@ class TaskController extends BaseApiController
         }
     }
 
+    /**
+     * Retrieve task info for edit
+     *
+     * @param int $taskId
+     *
+     * @return string
+     */
     public function edit($taskId)
     {
         try {
@@ -140,6 +157,11 @@ class TaskController extends BaseApiController
         }
     }
 
+    /**
+     * @param int $taskId
+     *
+     * @return string
+     */
     public function update($taskId)
     {
         try {
@@ -160,7 +182,6 @@ class TaskController extends BaseApiController
                     'messages' => $validator->getErrors(),
                 ])->render();
             }
-
             $image_id = $task->getImageId();
             if ($this->getRequest()->getFiles()) {
                 $uploadResult = $this->uploadImage();
@@ -182,7 +203,6 @@ class TaskController extends BaseApiController
                     $this->imageModel->delete($task->getImageId());
                 }
             }
-
             $task->exchangeArray($postParams)
                 ->setImageId($image_id)
                 ->setUpdated(date('Y-m-d H:i:s'));
@@ -199,6 +219,9 @@ class TaskController extends BaseApiController
         }
     }
 
+    /**
+     * @return array
+     */
     private function uploadImage()
     {
         $fileUploaderService = new FileUploaderService();
@@ -220,6 +243,11 @@ class TaskController extends BaseApiController
         return $uploadResult;
     }
 
+    /**
+     * @param string $photoPath
+     *
+     * @return array
+     */
     private function makeThumb($photoPath)
     {
         $imageTranformationService = new ImageTranformationService();

@@ -11,6 +11,11 @@ class Delete implements QueryPartInterface
      */
     private $tableName;
 
+    /**
+     * Delete constructor.
+     *
+     * @param string $tableName
+     */
     public function __construct($tableName)
     {
         $this->tableName = $tableName;
@@ -24,6 +29,9 @@ class Delete implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $query  = "DELETE FROM $this->tableName \n";

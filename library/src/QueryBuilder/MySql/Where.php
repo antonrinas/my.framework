@@ -26,6 +26,14 @@ class Where implements QueryPartInterface
      */
     private $params = [];
 
+    /**
+     * Where constructor.
+     *
+     * @param string $columnName
+     * @param int|string $value
+     * @param string $operator
+     * @param mixed $objectIndex
+     */
     public function __construct($columnName, $value, $operator = '=', $objectIndex)
     {
         $this->columnName = $columnName;
@@ -46,6 +54,9 @@ class Where implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         reset($this->params);

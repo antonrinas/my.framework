@@ -85,11 +85,12 @@ class Dispatcher implements DispatcherInterface
         $this->request = $request;
         return $this;
     }
-    
+
     /**
      * @return ResponseInterface
      *
      * @throws DispatcherException
+     * @throws \Framework\Mvc\View\ViewModelException
      */
     public function dispatch()
     {
@@ -106,6 +107,9 @@ class Dispatcher implements DispatcherInterface
 
     /**
      * @return BaseControllerInterface
+     *
+     * @throws DispatcherException
+     * @throws \Framework\Mvc\View\ViewModelException
      */
     private function initController()
     {
@@ -179,7 +183,12 @@ class Dispatcher implements DispatcherInterface
         }
     }
 
-
+    /**
+     * @param string $className
+     * @param string $methodName
+     *
+     * @throws DispatcherException
+     */
     private function checkClassMethodAvalability($className, $methodName)
     {
         if (!class_exists($className)) {

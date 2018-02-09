@@ -11,6 +11,11 @@ class GroupBy implements QueryPartInterface
      */
     private $columns;
 
+    /**
+     * GroupBy constructor.
+     *
+     * @param array $columns
+     */
     public function __construct($columns)
     {
         $this->columns = $columns;
@@ -24,6 +29,9 @@ class GroupBy implements QueryPartInterface
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $query  = implode(', ', $this->columns) . "\n";

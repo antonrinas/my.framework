@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Администратор
- * Date: 29.01.2018
- * Time: 22:47
- */
 
 namespace Framework\Mvc\Controller\Router;
 

@@ -21,6 +21,9 @@ class LoginController extends BaseApiController
         $this->userModel = ModelFactory::init(UserModel::class, UserEntity::class)->retrieveModel();
     }
 
+    /**
+     * @return string
+     */
     public function store()
     {
         try {
@@ -52,6 +55,12 @@ class LoginController extends BaseApiController
         }
     }
 
+    /**
+     * @param $messages
+     * @param string $generalMessage
+     *
+     * @return string
+     */
     protected function getWarningResponse($messages, $generalMessage = null)
     {
         return $this->getView()->setParams([

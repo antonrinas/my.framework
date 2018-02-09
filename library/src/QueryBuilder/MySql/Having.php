@@ -11,6 +11,11 @@ class Having implements QueryPartInterface
      */
     private $condition;
 
+    /**
+     * Having constructor.
+     *
+     * @param string $condition
+     */
     public function __construct($condition)
     {
         $this->condition = $condition;
@@ -24,6 +29,9 @@ class Having implements QueryPartInterface
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $query  = "$this->condition\n";

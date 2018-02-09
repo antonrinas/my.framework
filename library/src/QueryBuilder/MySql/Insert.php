@@ -21,6 +21,13 @@ class Insert implements QueryPartInterface
      */
     private $params = [];
 
+    /**
+     * Insert constructor.
+     *
+     * @param string $tableName
+     * @param array $values
+     * @param mixed $objectIndex
+     */
     public function __construct($tableName, $values, $objectIndex)
     {
         $this->tableName = $tableName;
@@ -40,6 +47,9 @@ class Insert implements QueryPartInterface
         return $this->params;
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $columns = array_keys($this->values);

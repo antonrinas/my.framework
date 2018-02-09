@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: админ
- * Date: 30.01.2018
- * Time: 8:34
- */
 
 namespace Framework\Mvc\Controller\Request;
 

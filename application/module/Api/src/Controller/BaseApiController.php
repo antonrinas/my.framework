@@ -21,6 +21,9 @@ class BaseApiController extends BaseController
         ])->render();
     }
 
+    /**
+     * @throws ControllerException
+     */
     protected function authorizeAdmin()
     {
         $user = $this->getSession()->getUserData();
@@ -34,6 +37,9 @@ class BaseApiController extends BaseController
         }
     }
 
+    /**
+     * @param string $filePath
+     */
     protected function unlinkFile($filePath)
     {
         if (is_file($filePath)){

@@ -10,6 +10,9 @@ use Framework\Session\Session;
 
 class DispatcherFactory implements FactoryInterface
 {
+    /**
+     * @return DispatcherInterface
+     */
     public function getInstance()
     {
         return new Dispatcher(

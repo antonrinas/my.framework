@@ -49,6 +49,13 @@ class Router implements RouterInterface
         return $this->matchedRoute;
     }
 
+    /**
+     * Router constructor.
+     *
+     * @param array $routes
+     *
+     * @throws RouterException
+     */
     public function __construct($routes)
     {
         $this->routes = $routes;

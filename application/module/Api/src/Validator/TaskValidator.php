@@ -54,6 +54,9 @@ class TaskValidator
         $this->validator->setElementsValidators($this->validators);
     }
 
+    /**
+     * @return bool
+     */
     public function isValid()
     {
         if ($this->validator->isValid()) {

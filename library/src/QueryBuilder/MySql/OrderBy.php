@@ -11,6 +11,11 @@ class OrderBy implements QueryPartInterface
      */
     private $columns;
 
+    /**
+     * OrderBy constructor.
+     *
+     * @param array $columns
+     */
     public function __construct($columns)
     {
         $this->columns = $columns;
@@ -24,6 +29,9 @@ class OrderBy implements QueryPartInterface
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         $directions = [];

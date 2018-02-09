@@ -12,6 +12,9 @@ class LogoutController extends BaseController
      */
     protected $contentType = 'application/json';
 
+    /**
+     * @return string
+     */
     public function store()
     {
         try {

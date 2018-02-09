@@ -21,6 +21,13 @@ class Join implements QueryPartInterface
      */
     private $type = 'INNER';
 
+    /**
+     * Join constructor.
+     *
+     * @param string $tableName
+     * @param string $on
+     * @param string $type
+     */
     public function __construct($tableName, $on, $type)
     {
         $this->tableName = $tableName;
@@ -36,6 +43,9 @@ class Join implements QueryPartInterface
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function compileQueryPart()
     {
         if ($this->type === 'INNER') {

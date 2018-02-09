@@ -9,7 +9,9 @@ class Image extends Base
     protected $tableName = 'images';
 
     /**
-     * @param mixed $id
+     * @param int $id
+     *
+     * @return bool|void
      */
     public function delete($id)
     {
@@ -32,6 +34,9 @@ class Image extends Base
         $this->getTableAdapter()->execute($queryBuilderResult['query'], $queryBuilderResult['params']);
     }
 
+    /**
+     * @param string $filePath
+     */
     private function unlinkFile($filePath)
     {
         if (is_file($filePath)){
