@@ -41,11 +41,6 @@ class ViewModel implements ViewModelInterface
      */
     private $noEscape = false;
 
-    public function __construct()
-    {
-
-    }
-
     /**
      * @param $config
      *

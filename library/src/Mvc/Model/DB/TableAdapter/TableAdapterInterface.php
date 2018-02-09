@@ -8,7 +8,7 @@ interface TableAdapterInterface
     public function getConnection();
 
     /**
-     * Fetch single row and return it as an Object
+     * Fetch single row and return it as an Object or array
      *
      * @param string $sql
      * @param array $params
@@ -19,7 +19,7 @@ interface TableAdapterInterface
     public function fetch($sql, $params, $asArray);
 
     /**
-     * Fetch all rows and return it as array of objects
+     * Fetch all rows and return it as array of objects or arrays
      *
      * @param string $sql
      * @param array $params
@@ -32,8 +32,6 @@ interface TableAdapterInterface
     /**
      * @param string $sql
      * @param array $params
-     *
-     * @return mixed
      */
     public function execute($sql, $params);
 
