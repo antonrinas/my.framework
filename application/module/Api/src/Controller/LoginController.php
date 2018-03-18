@@ -26,7 +26,7 @@ class LoginController extends BaseApiController
      */
     public function store()
     {
-        try {
+        try { 
             $postParams = $this->getRequest()->getPostParams();
 
             $validator = new LoginValidator($postParams);
