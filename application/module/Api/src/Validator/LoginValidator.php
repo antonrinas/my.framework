@@ -2,68 +2,42 @@
 
 namespace Api\Validator;
 
-use Framework\Validator\Validator;
-use Framework\Validator\ValidatorInterface;
+use Main\Validator\BaseValidator;
 
-class LoginValidator
+class LoginValidator extends BaseValidator
 {
     /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
      * @var array
      */
-    private $filters = [
-        'email' => array('trimFilter'),
-        'password' => array('trimFilter'),
+    protected $filters = [
+        'email' => ['trimFilter'],
+        'password' => ['trimFilter'],
     ];
 
-    private $validators = [
-        'email' => array(
-            array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 100, 'message' => 'Длина должна быть от 0 до 100 символов'),
-        ),
-        'password' => array(
-            array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 100, 'message' => 'Длина должна быть от 0 до 100 символов'),
-        ),
+    protected $validators = [
+        'email' => [
+            [
+                'name' => 'notEmptyValidator',
+                'message' => 'Поле не может быть пустым'
+            ],
+            [
+                'name' => 'stringLengthValidator',
+                'min' => 0,
+                'max' => 100,
+                'message' => 'Длина должна быть от 0 до 100 символов'
+            ],
+        ],
+        'password' => [
+            [
+                'name' => 'notEmptyValidator',
+                'message' => 'Поле не может быть пустым'
+            ],
+            [
+                'name' => 'stringLengthValidator',
+                'min' => 0,
+                'max' => 100,
+                'message' => 'Длина должна быть от 0 до 100 символов'
+            ],
+        ],
     ];
-
-    /**
-     * @var array
-     */
-    private $errors;
-
-    public function __construct($data)
-    {
-        $this->validator = new Validator();
-        $this->validator->setFormElements($data);
-        $this->validator->setElementsFilters($this->filters);
-        $this->validator->setElementsValidators($this->validators);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        if ($this->validator->isValid()) {
-            return true;
-        }
-        $this->errors = $this->validator->getElementsErrors();
-        foreach ($this->errors as $elementName => $errors) {
-            $this->errors[$elementName] = implode(', ', $errors);
-        }
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
 }

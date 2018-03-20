@@ -38,6 +38,32 @@ class BaseApiController extends BaseController
     }
 
     /**
+     * @throws ControllerException
+     */
+    protected function authorizeUser()
+    {
+        $user = $this->getSession()->getUserData();
+        $exception = new ControllerException('This resource is forbidden for your role');
+        $exception->setCode(Constants::FORBIDEN_STATUS_CODE);
+        if (!$user){
+            throw $exception;
+        }
+        if ($user->getRoleId() != Constants::USER_ROLE_ID){
+            throw $exception;
+        }
+    }
+
+    protected function isAuthenticated()
+    {
+        $user = $this->getSession()->getUserData();
+        $exception = new ControllerException('This resource is forbidden for your role');
+        $exception->setCode(Constants::FORBIDEN_STATUS_CODE);
+        if (!$user){
+            throw $exception;
+        }
+    }
+
+    /**
      * @param string $filePath
      */
     protected function unlinkFile($filePath)

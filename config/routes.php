@@ -92,5 +92,22 @@ return [
             'controller' => 'Logout',
             'method' => 'store',
         ],
+        // Messages
+        [
+            'url' => '/api/messages',
+            'request_method' => 'GET',
+            'module' => 'Api',
+            'namespace' => 'Controller',
+            'controller' => 'Message',
+            'method' => 'index',
+        ],
+        [
+            'url' => '/api/messages',
+            'request_method' => 'POST',
+            'module' => 'Api',
+            'namespace' => 'Controller',
+            'controller' => 'Message',
+            'method' => 'store',
+        ],
     ],
 ];

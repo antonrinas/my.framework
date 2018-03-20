@@ -2,15 +2,17 @@
     <div id="navigation_bar">
         <b-navbar toggleable="md" type="light" variant="faded">
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand href="/">Главная</b-navbar-brand>
-
             <b-collapse is-nav id="nav_collapse">
+                <b-navbar-nav>
+                    <router-link class="nav-link" to="/" exact>Главная</router-link>
+                </b-navbar-nav>
                 <b-navbar-nav class="ml-auto">
                     <template v-if="authenticated === 0">
                         <b-nav-item href="#" v-on:click="showLoginForm = true">Войти</b-nav-item>
                     </template>
                     <template v-else>
-                        <b-nav-item href="#" disabled>Здравствуйте, Администратор!</b-nav-item>
+                        <router-link class="nav-link" to="/chat">Чат</router-link>
+                        <b-nav-item href="#" disabled>Здравствуйте!</b-nav-item>
                         <b-nav-item href="#" v-on:click="logout">Выйти</b-nav-item>
                     </template>
                 </b-navbar-nav>

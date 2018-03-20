@@ -2,78 +2,66 @@
 
 namespace Api\Validator;
 
-use Framework\Validator\Validator;
-use Framework\Validator\ValidatorInterface;
+use Main\Validator\BaseValidator;
 
-class TaskValidator
+class TaskValidator extends BaseValidator
 {
     /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
      * @var array
      */
-    private $filters = [
-        'user_name' => array('trimFilter', 'stripSlashesFilter'),
-        'email' => array('trimFilter', 'stripSlashesFilter'),
-        'description' => array('trimFilter', 'stripSlashesFilter'),
-        'status' => array('trimFilter'),
+    protected $filters = [
+        'user_name' => ['trimFilter', 'stripSlashesFilter'],
+        'email' => ['trimFilter', 'stripSlashesFilter'],
+        'description' => ['trimFilter', 'stripSlashesFilter'],
+        'status' => ['trimFilter'],
     ];
 
-    private $validators = [
-        'user_name' => array(
-            array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 255, 'message' => 'Длина должна быть от 0 до 255 символов'),
-        ),
-        'email' => array(
-            array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 255, 'message' => 'Длина должна быть от 0 до 255 символов'),
-            array('name' => 'emailAddressValidator', 'message' => 'Неверный формат email адреса'),
-        ),
-        'description' => array(
-            array('name' => 'notEmptyValidator', 'message' => 'Поле не может быть пустым'),
-            array('name' => 'stringLengthValidator', 'min' => 0, 'max' => 2000, 'message' => 'Длина должна быть от 0 до 2000 символов'),
-        ),
-        'status' => array(
-            array('name' => 'regexValidator', 'message' => 'Неверный формат данных', 'regex' => '/^(1|2)*$/'),
-        ),
+    protected $validators = [
+        'user_name' => [
+            [
+                'name' => 'notEmptyValidator',
+                'message' => 'Поле не может быть пустым'
+            ],
+            [
+                'name' => 'stringLengthValidator',
+                'min' => 0,
+                'max' => 255,
+                'message' => 'Длина должна быть от 0 до 255 символов'
+            ],
+        ],
+        'email' => [
+            [
+                'name' => 'notEmptyValidator',
+                'message' => 'Поле не может быть пустым'
+            ],
+            [
+                'name' => 'stringLengthValidator',
+                'min' => 0,
+                'max' => 255,
+                'message' => 'Длина должна быть от 0 до 255 символов'
+            ],
+            [
+                'name' => 'emailAddressValidator',
+                'message' => 'Неверный формат email адреса'
+            ],
+        ],
+        'description' => [
+            [
+                'name' => 'notEmptyValidator',
+                'message' => 'Поле не может быть пустым'
+            ],
+            [
+                'name' => 'stringLengthValidator',
+                'min' => 0,
+                'max' => 2000,
+                'message' => 'Длина должна быть от 0 до 2000 символов'
+            ],
+        ],
+        'status' => [
+            [
+                'name' => 'regexValidator',
+                'message' => 'Неверный формат данных', 'regex' => '/^(1|2)*$/'
+            ],
+        ],
     ];
-
-    /**
-     * @var array
-     */
-    private $errors;
-
-    public function __construct($data)
-    {
-        $this->validator = new Validator();
-        $this->validator->setFormElements($data);
-        $this->validator->setElementsFilters($this->filters);
-        $this->validator->setElementsValidators($this->validators);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        if ($this->validator->isValid()) {
-            return true;
-        }
-        $this->errors = $this->validator->getElementsErrors();
-        foreach ($this->errors as $elementName => $errors) {
-            $this->errors[$elementName] = implode(', ', $errors);
-        }
-        return false;
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
 }
