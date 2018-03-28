@@ -85,26 +85,25 @@ class Router implements RouterInterface
                 foreach ($rules['params'] as $paramName => $regex){
                     $pattern = str_replace($paramName, $regex, $pattern);
                 }
-
-                if (preg_match('/' . $pattern . '$/', $this->url)){
-                    $replacement = [];
-                    for ($i = 1; $i <= count($rules['params']); $i++) {
-                        $replacement[] = '${' . $i . '}';
-                    }
-
-                    $matches = preg_replace('/' . $pattern . '/', implode('|', $replacement), $this->url);
-                    $this->params = explode('|', $matches);
-                    $this->matchedRoute = $rules;
-
-                    return true;
+                if (!preg_match('/' . $pattern . '$/', $this->url)){
+                    continue;
                 }
-            } else {
-                $pattern = str_replace("/", "\/", $rules['url']);
-                if (preg_match('/' . $pattern . '$/', $this->url)){
-                    $this->matchedRoute = $rules;
-
-                    return true;
+                $replacement = [];
+                for ($i = 1; $i <= count($rules['params']); $i++) {
+                    $replacement[] = '${' . $i . '}';
                 }
+
+                $matches = preg_replace('/' . $pattern . '/', implode('|', $replacement), $this->url);
+                $this->params = explode('|', $matches);
+                $this->matchedRoute = $rules;
+
+                return true;
+            }
+            $pattern = str_replace("/", "\/", $rules['url']);
+            if (preg_match('/' . $pattern . '$/', $this->url)){
+                $this->matchedRoute = $rules;
+
+                return true;
             }
         }
         throw new RouterException('Matched route was not found');

@@ -50,6 +50,10 @@ class FrontController implements FrontControllerInterface
 
     /**
      * @return ResponseInterface
+     *
+     * @throws Dispatcher\DispatcherException
+     *
+     * @throws \Framework\Mvc\View\ViewModelException
      */
     public function handleRequest()
     {
@@ -57,6 +61,9 @@ class FrontController implements FrontControllerInterface
         return $this->dispatch();
     }
 
+    /**
+     * Set initial request properties
+     */
     private function initRequest()
     {
         $this->request->setRequestMethod($_SERVER['REQUEST_METHOD']);
@@ -71,6 +78,8 @@ class FrontController implements FrontControllerInterface
      * @return ResponseInterface
      *
      * @throws Dispatcher\DispatcherException
+     *
+     * @throws \Framework\Mvc\View\ViewModelException
      */
     private function dispatch()
     {
